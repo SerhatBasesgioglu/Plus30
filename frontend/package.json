@@ -1,0 +1,15 @@
+{
+  "name": "plus30-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for the plus30",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "aydakar",
+  "license": "GNU",
+  "devDependencies": {
+    "electron": "^27.1.0"
+  }
+}
