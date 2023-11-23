@@ -3,7 +3,9 @@ package com.aydakar.plus30backend.util;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
@@ -20,6 +22,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Component
 public class LCUConnector{
     private String appPort;
     private String authToken;
@@ -30,12 +33,19 @@ public class LCUConnector{
         commandLineFetcher();
     }
 
-    public void connect() throws SSLException {
-        SslContext sslContext = SslContextBuilder
-                .forClient()
-                .trustManager(InsecureTrustManagerFactory.INSTANCE)
-                .build();
-        HttpClient httpClient = HttpClient.create().secure(t -> t.sslContext(sslContext));
+    public void connect() {
+        SslContext sslContext = null;
+        try {
+            sslContext = SslContextBuilder
+                    .forClient()
+                    .trustManager(InsecureTrustManagerFactory.INSTANCE)
+                    .build();
+        } catch (SSLException e) {
+            throw new RuntimeException(e);
+
+        }
+        SslContext finalSslContext = sslContext;
+        HttpClient httpClient = HttpClient.create().secure(t -> t.sslContext(finalSslContext));
 
         client = WebClient.builder()
                 .baseUrl("https://127.0.0.1:" + this.appPort)

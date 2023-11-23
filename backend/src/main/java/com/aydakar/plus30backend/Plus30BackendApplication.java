@@ -16,11 +16,10 @@ public class Plus30BackendApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... arg0)throws IOException{
-		LCUConnector connector = new LCUConnector();
-		connector.connect();
-		connector.printInfo();
-		connector.get("/lol-summoner/v1/current-summoner");
-		//connector.req("GET", "/lol-summoner/v1/current-summoner");
+		//LCUConnector connector = new LCUConnector();
+		//connector.connect();
+		//connector.printInfo();
+		//connector.get("/lol-summoner/v1/current-summoner");
 	}
 }
 
