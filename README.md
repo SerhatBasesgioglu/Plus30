@@ -2,30 +2,31 @@
 
 Currently on development!
 
-Aims to automate some tasks for the custom game lobbies (Centered around Howling Abyss).
+Plus30 aims to automate some tasks for the custom game lobbies (Centered around Howling Abyss).
 
 
 
-Planned Features
+# Planned Features
 
--Auto Invite
+- Auto Invite
+- Whitelist/Blacklist
+- Custom Stats for Custom Games
+- Discord Integration (?)
+- Custom Ban/Pick System For Champion Selection (?)
+- Automated Messages (?)
 
--Whitelist/Blacklist
+# Setup
 
--Custom Stats for Custom Games
-
--Discord Integration (?)
-
--Custom Ban/Pick System For Champion Selection (?)
-
--Automated Messages (?)
+Not available yet.
 
 
-Communication
+## Issues / Contributions
 
-Riot Id: AyDaKaR#Raven
+You can reach me with following channels, I appreciate the use of Issues page though (https://github.com/SerhatBasesgioglu/Plus30/issues)
 
-Discord: aydakar
+- Riot Id: AyDaKaR#Raven
+
+- Discord: aydakar
 
 Disclaimer
 
