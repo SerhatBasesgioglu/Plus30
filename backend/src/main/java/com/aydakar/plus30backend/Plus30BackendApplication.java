@@ -19,7 +19,8 @@ public class Plus30BackendApplication implements CommandLineRunner {
 		LCUConnector connector = new LCUConnector();
 		connector.connect();
 		connector.printInfo();
-		connector.req("GET", "/lol-summoner/v1/current-summoner");
+		connector.get("/lol-summoner/v1/current-summoner");
+		//connector.req("GET", "/lol-summoner/v1/current-summoner");
 	}
 }
 

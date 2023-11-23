@@ -1,29 +1,47 @@
 package com.aydakar.plus30backend.util;
 
+import io.netty.handler.ssl.SslContext;
+import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+import reactor.netty.http.client.HttpClient;
+
+import javax.net.ssl.SSLException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static com.aydakar.plus30backend.util.SSLManager.disableSSLVerification;
 
 public class LCUConnector{
     private String appPort;
     private String authToken;
+    WebClient client;
 
 
     public LCUConnector(){
-
+        commandLineFetcher();
     }
 
-    public void connect(){
-        commandLineFetcher();
+    public void connect() throws SSLException {
+        SslContext sslContext = SslContextBuilder
+                .forClient()
+                .trustManager(InsecureTrustManagerFactory.INSTANCE)
+                .build();
+        HttpClient httpClient = HttpClient.create().secure(t -> t.sslContext(sslContext));
+
+        client = WebClient.builder()
+                .baseUrl("https://127.0.0.1:" + this.appPort)
+                .defaultHeader("Authorization", this.authToken)
+                .clientConnector(new ReactorClientHttpConnector(httpClient))
+                .build();
     }
 
     public void disconnect(){
@@ -89,34 +107,38 @@ public class LCUConnector{
         return new String(encodedBytes, StandardCharsets.UTF_8);
     }
 
-    public void req(String httpType, String endpoint) throws IOException {
-        disableSSLVerification();
+    public void get(String endpoint){
+        Mono<Map> result = client.get()
+                .uri(endpoint)
+                .retrieve()
+                .bodyToMono(Map.class);
+        result.subscribe(System.out::println);
+    }
 
-        String url = "https://127.0.0.1:" + this.appPort + endpoint;
-        URL reqUrl = new URL(url);
-        HttpURLConnection connection = (HttpURLConnection) reqUrl.openConnection();
-        connection.setRequestMethod(httpType);
-        connection.setRequestProperty("Authorization", this.authToken);
+    public void post(String endpoint, Map<String,Object> postData){
+        Mono<String> result = client.post()
+                .uri(endpoint)
+                .body(Mono.just(postData), Map.class)
+                .retrieve()
+                .bodyToMono(String.class);
+        result.subscribe(System.out::println);
+    }
 
-        int responseCode = connection.getResponseCode();
+    public void put(String endpoint, Map<String,Object> putData){
+        Mono<String> result = client.put()
+                .uri(endpoint)
+                .body(Mono.just(putData), Map.class)
+                .retrieve()
+                .bodyToMono(String.class);
+        result.subscribe(System.out::println);
+    }
 
-        if(responseCode == HttpURLConnection.HTTP_OK){
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String line;
-            StringBuilder response = new StringBuilder();
-
-            while((line = reader.readLine()) != null){
-                response.append(line);
-            }
-            reader.close();
-
-            System.out.println("Response Content:");
-            System.out.println(response.toString());
-        } else {
-            System.out.println("Error: " + responseCode);
-        }
-
-
+    public void delete(String endpoint){
+        Mono<Void> result = client.delete()
+                .uri(endpoint)
+                .retrieve()
+                .bodyToMono(Void.class);
+        result.subscribe(System.out::println);
     }
 
     //Shows appPort and authToken
@@ -124,5 +146,10 @@ public class LCUConnector{
         System.out.println(this.appPort + this.authToken);
     }
 
+    public void test(){
+        Mono<Map> result = client.get().uri("/lol-summoner/v1/current-summoner").retrieve().bodyToMono(Map.class);
+        System.out.println(result);
+        result.subscribe(System.out::println);
+    }
 
 }
