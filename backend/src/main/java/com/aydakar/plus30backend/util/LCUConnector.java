@@ -4,6 +4,7 @@ import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -126,10 +127,11 @@ public class LCUConnector{
                 .bodyToMono(String.class);
     }
 
-    public Mono<String> post(String endpoint, Map<String,Object> postData){
+    public Mono<String> post(String endpoint, String postData){
         return client.post()
                 .uri(endpoint)
-                .body(Mono.just(postData), Map.class)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(postData), String.class)
                 .retrieve()
                 .bodyToMono(String.class);
     }
