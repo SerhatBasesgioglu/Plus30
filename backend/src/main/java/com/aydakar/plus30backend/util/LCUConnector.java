@@ -55,7 +55,7 @@ public class LCUConnector{
     }
 
     public void disconnect(){
-
+        //May not be necessary, not sure.
     }
 
     //Gets appPort and authToken from commandline
@@ -112,43 +112,41 @@ public class LCUConnector{
     }
 
     //Base64 encoding for authToken
-    private static String encodeString(String input) {
+    private String encodeString(String input) {
         byte[] encodedBytes = Base64.getEncoder().encode(input.getBytes(StandardCharsets.UTF_8));
         return new String(encodedBytes, StandardCharsets.UTF_8);
     }
 
-    public void get(String endpoint){
-        Mono<Map> result = client.get()
+    //get,post,put,delete requests for the LCU api, uses non-blocking logic, for synchronous response
+    // .block() can be added
+    public Mono<String> get(String endpoint){
+        return client.get()
                 .uri(endpoint)
                 .retrieve()
-                .bodyToMono(Map.class);
-        result.subscribe(System.out::println);
+                .bodyToMono(String.class);
     }
 
-    public void post(String endpoint, Map<String,Object> postData){
-        Mono<String> result = client.post()
+    public Mono<String> post(String endpoint, Map<String,Object> postData){
+        return client.post()
                 .uri(endpoint)
                 .body(Mono.just(postData), Map.class)
                 .retrieve()
                 .bodyToMono(String.class);
-        result.subscribe(System.out::println);
     }
 
-    public void put(String endpoint, Map<String,Object> putData){
-        Mono<String> result = client.put()
+    public Mono<String> put(String endpoint, Map<String,Object> putData){
+        return client.put()
                 .uri(endpoint)
                 .body(Mono.just(putData), Map.class)
                 .retrieve()
                 .bodyToMono(String.class);
-        result.subscribe(System.out::println);
     }
 
-    public void delete(String endpoint){
-        Mono<Void> result = client.delete()
+    public Mono<String> delete(String endpoint){
+        return client.delete()
                 .uri(endpoint)
                 .retrieve()
-                .bodyToMono(Void.class);
-        result.subscribe(System.out::println);
+                .bodyToMono(String.class);
     }
 
     //Shows appPort and authToken
@@ -156,10 +154,10 @@ public class LCUConnector{
         System.out.println(this.appPort + this.authToken);
     }
 
+    //Can be used to test whether the connection is working
     public void test(){
-        Mono<Map> result = client.get().uri("/lol-summoner/v1/current-summoner").retrieve().bodyToMono(Map.class);
+        String result = this.get("/lol-summoner/v1/current-summoner").block();
         System.out.println(result);
-        result.subscribe(System.out::println);
     }
 
 }
