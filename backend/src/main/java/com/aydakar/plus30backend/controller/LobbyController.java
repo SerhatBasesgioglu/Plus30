@@ -16,7 +16,6 @@ public class LobbyController {
     public LobbyController(LCUConnector connector){
         this.connector = connector;
         connector.connect();
-        System.out.println("Injected");
     }
 
     @GetMapping("all-lobbies")
@@ -24,15 +23,18 @@ public class LobbyController {
         return connector.get("/lol-lobby/v1/custom-games");
     }
 
+
+    //Change to post after frontend starts to work
     @GetMapping("create")
     public Mono<String> createLobby(){
         String data ="""
                 {"customGameLobby":{"configuration":
                     {"gameMode":"ARAM","gameMutator":"","gameServerRegion":"","mapId":12,"mutators":
                         {"id":1},
-                    "spectatorPolicy":"AllAllowed","teamSize":5},"lobbyName":"AyDaKaR oyunu","lobbyPassword":"21"},
+                    "spectatorPolicy":"AllAllowed","teamSize":5},"lobbyName":"­ ­ ­ ­ ­ ­ ­ ­ ­zzz","lobbyPassword":"21"},
                 "isCustom":true,"queueId":-1}
                 """;
         return connector.post("/lol-lobby/v2/lobby", data);
+
     }
 }

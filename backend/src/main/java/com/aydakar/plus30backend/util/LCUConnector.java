@@ -136,10 +136,11 @@ public class LCUConnector{
                 .bodyToMono(String.class);
     }
 
-    public Mono<String> put(String endpoint, Map<String,Object> putData){
+    public Mono<String> put(String endpoint, String putData){
         return client.put()
                 .uri(endpoint)
-                .body(Mono.just(putData), Map.class)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(putData), String.class)
                 .retrieve()
                 .bodyToMono(String.class);
     }
