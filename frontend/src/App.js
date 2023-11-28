@@ -1,7 +1,11 @@
+import Body from "./components/Body";
+
 function App() {
-  const color = ["Red", "Orange", "Blue", "Green"];
-  const colorChanged = color.map((x) => <p>{x}</p>);
-  return <div className="App">{colorChanged}</div>;
+  return (
+    <div className="App">
+      <Body />
+    </div>
+  );
 }
 
 export default App;

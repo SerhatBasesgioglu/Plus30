@@ -159,7 +159,7 @@ public class LCUConnector{
 
     //Can be used to test whether the connection is working
     public void test(){
-        String result = this.get("/lol-summoner/v1/current-summoner").block();
+        String result = null; //this.get("/lol-summoner/v1/current-summoner").block();
         System.out.println(result);
     }
 
