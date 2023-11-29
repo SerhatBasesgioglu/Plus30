@@ -15,9 +15,19 @@ Plus30 aims to automate some tasks for the custom game lobbies (Centered around 
 - Custom Ban/Pick System For Champion Selection (?)
 - Automated Messages (?)
 
+# TO DO
+
+- Change connector from sync to async
+- Implement websocket (Currently timer calls functions, websocket when a event happens)
+- All logic is inside the contoller, seperate into service layer
+- Implement error handling
+- Write unit test
+
 # Setup
 
 Not available yet.
+
+
 
 
 ## Issues / Contributions
