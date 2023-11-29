@@ -1,5 +1,6 @@
 package com.aydakar.plus30backend.util;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
@@ -120,33 +121,46 @@ public class LCUConnector{
 
     //get,post,put,delete requests for the LCU api, uses non-blocking logic, for synchronous response
     // .block() can be added
-    public Mono<String> get(String endpoint){
+    public JsonNode get(String endpoint){
         return client.get()
                 .uri(endpoint)
                 .retrieve()
-                .bodyToMono(String.class);
+                .bodyToMono(JsonNode.class)
+                .block();
     }
 
-    public Mono<String> post(String endpoint, String postData){
-        return client.post()
+
+    public void post(String endpoint){
+        client.post()
+                .uri(endpoint)
+                .contentType(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+    }
+
+    public void post(String endpoint, String postData){
+        client.post()
                 .uri(endpoint)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Mono.just(postData), String.class)
                 .retrieve()
-                .bodyToMono(String.class);
+                .bodyToMono(String.class)
+                .block();
     }
 
-    public Mono<String> put(String endpoint, String putData){
-        return client.put()
+    public void put(String endpoint, String putData){
+        client.put()
                 .uri(endpoint)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Mono.just(putData), String.class)
                 .retrieve()
-                .bodyToMono(String.class);
+                .bodyToMono(String.class)
+                .block();
     }
 
-    public Mono<String> delete(String endpoint){
-        return client.delete()
+    public void delete(String endpoint){
+        client.delete()
                 .uri(endpoint)
                 .retrieve()
                 .bodyToMono(String.class);

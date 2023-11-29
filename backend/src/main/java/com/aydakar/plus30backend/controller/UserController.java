@@ -21,11 +21,12 @@ public class UserController {
         this.objectMapper = objectMapper;
         connector.connect();
     }
-
+/*
     @GetMapping("/")
     public Summoner currentUser() throws JsonProcessingException {
         String data = connector.get("/lol-summoner/v1/current-summoner").block();
         Summoner summoner = objectMapper.readValue(data, Summoner.class);
         return summoner;
     }
+    */
 }
