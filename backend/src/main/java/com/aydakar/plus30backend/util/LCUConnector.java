@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Component;
@@ -20,7 +19,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,7 +34,7 @@ public class LCUConnector{
     }
 
     public void connect() {
-        SslContext sslContext = null;
+        SslContext sslContext;
         try {
             sslContext = SslContextBuilder
                     .forClient()
@@ -119,8 +117,8 @@ public class LCUConnector{
         return new String(encodedBytes, StandardCharsets.UTF_8);
     }
 
-    //get,post,put,delete requests for the LCU api, uses non-blocking logic, for synchronous response
-    // .block() can be added
+    //get,post,put,delete requests for the LCU api, uses non-blocking logic, currently I am converting
+    // it to blocking with .block(), later on can be changed to non-block for better performance.
     public JsonNode get(String endpoint){
         return client.get()
                 .uri(endpoint)
@@ -149,6 +147,15 @@ public class LCUConnector{
                 .block();
     }
 
+    public void put(String endpoint){
+        client.put()
+                .uri(endpoint)
+                .contentType(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+    }
+
     public void put(String endpoint, String putData){
         client.put()
                 .uri(endpoint)
@@ -170,11 +177,4 @@ public class LCUConnector{
     public void printInfo(){
         System.out.println(this.appPort + this.authToken);
     }
-
-    //Can be used to test whether the connection is working
-    public void test(){
-        String result = null; //this.get("/lol-summoner/v1/current-summoner").block();
-        System.out.println(result);
-    }
-
 }
