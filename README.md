@@ -18,7 +18,7 @@ Plus30 aims to automate some tasks for the custom game lobbies (Centered around 
 # TO DO
 
 - Change connector from sync to async
-- Implement websocket (Currently timer calls functions, websocket when a event happens)
+- Implement websocket (Currently timer calls functions, websocket will call them when an event happens)
 - All logic is inside the contoller, seperate into service layer
 - Implement error handling
 - Write unit test
