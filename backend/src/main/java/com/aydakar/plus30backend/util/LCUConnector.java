@@ -1,6 +1,7 @@
 package com.aydakar.plus30backend.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
@@ -8,29 +9,25 @@ import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
 import javax.net.ssl.SSLException;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import static com.aydakar.plus30backend.util.CommandLineFetcher.commandLineFetch;
 
 @Component
-public class LCUConnector{
-    private String appPort;
-    private String authToken;
+public class LCUConnector {
+    private final String appPort;
+    private final String authToken;
     WebClient client;
+    ObjectMapper objectMapper;
 
-
-    public LCUConnector(){
-        commandLineFetcher();
+    public LCUConnector(ObjectMapper objectMapper) {
+        this.appPort = commandLineFetch().get("appPort");
+        this.authToken = commandLineFetch().get("authToken");
+        this.objectMapper = objectMapper;
     }
 
     public void connect() {
@@ -42,8 +39,8 @@ public class LCUConnector{
                     .build();
         } catch (SSLException e) {
             throw new RuntimeException(e);
-
         }
+
         SslContext finalSslContext = sslContext;
         HttpClient httpClient = HttpClient.create().secure(t -> t.sslContext(finalSslContext));
 
@@ -54,127 +51,69 @@ public class LCUConnector{
                 .build();
     }
 
-    public void disconnect(){
-        //May not be necessary, not sure.
+    private void disconnect() {
+        //May not be necessary, after the implementation change into public.
     }
 
-    //Gets appPort and authToken from commandline
-    private void commandLineFetcher(){
-        String command = "wmic PROCESS WHERE name='LeagueClientUx.exe' GET commandline";
-        StringBuilder output = new StringBuilder();
-        String authToken = "";
-        String appPort = "";
+    /*
+    get,post,put,delete requests for the LCU api, normally it uses non-blocking logic, but
+    I am converting it to blocking with .block(), later on can be changed to non-block for
+    better performance.
+     */
 
-        try{
-            ProcessBuilder processBuilder = new ProcessBuilder(command.split("\\s+"));
-            Process process = processBuilder.start();
+    public JsonNode get(String endPoint){
+        return execute("get", endPoint, null);
+    }
 
-            //Gets raw byte stream, turns into characters, reads with buffer
-            InputStream inputStream = process.getInputStream();
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            String line;
+    public JsonNode post(String endPoint){
+        return execute("post", endPoint, null);
 
-            while((line = bufferedReader.readLine()) != null){
-                output.append(line).append("\n");
+    }
+    public JsonNode post(String endPoint, JsonNode data){
+        return execute("post", endPoint, data);
+    }
+
+    public JsonNode put(String endPoint){
+        return execute("put", endPoint, null);
+
+    }
+    public JsonNode put(String endPoint, JsonNode data){
+        return execute("put", endPoint, data);
+    }
+
+    public JsonNode delete(String endPoint){
+        return execute("delete", endPoint, null);
+    }
+
+    private JsonNode execute(String method, String endPoint, JsonNode data){
+        WebClient.ResponseSpec responseSpec = null;
+        try {
+            responseSpec = switch (method) {
+                case "get" -> client.get().uri(endPoint).retrieve();
+                case "delete" -> client.delete().uri(endPoint).retrieve();
+                case "post" -> (data == null) ?
+                        client.post().uri(endPoint).contentType(MediaType.APPLICATION_JSON).retrieve() :
+                        client.post().uri(endPoint).contentType(MediaType.APPLICATION_JSON).body(Mono.just(data), JsonNode.class).retrieve();
+                case "put" -> (data == null) ?
+                        client.put().uri(endPoint).contentType(MediaType.APPLICATION_JSON).retrieve() :
+                        client.put().uri(endPoint).contentType(MediaType.APPLICATION_JSON).body(Mono.just(data), JsonNode.class).retrieve();
+                default -> null;
+            };
+            if (responseSpec != null) {
+                JsonNode response = responseSpec.bodyToMono(JsonNode.class)
+                        .onErrorResume(WebClientResponseException.class, e ->
+                                Mono.just(e.getResponseBodyAs(JsonNode.class)))
+                        .block();
+                System.out.println(response);
+                return response;
             }
-
-            bufferedReader.close();
-            inputStreamReader.close();
-            inputStream.close();
+        }catch(Exception e) {
+            return objectMapper.valueToTree(e);
         }
-        catch(IOException e){
-            e.printStackTrace();
-        }
-
-        String appPortPattern = "--app-port=([0-9]*)";
-        String authTokenPattern = "--remoting-auth-token=([\\w-]*)";
-
-        Pattern appPortPatternCompiled = Pattern.compile(appPortPattern);
-        Pattern authTokenPatternCompiled = Pattern.compile(authTokenPattern);
-
-        Matcher appPortMatcher = appPortPatternCompiled.matcher(output);
-        Matcher authTokenMatcher = authTokenPatternCompiled.matcher(output);
-
-        if (appPortMatcher.find()) {
-            appPort = appPortMatcher.group(1);
-        }
-
-        if (authTokenMatcher.find()) {
-            authToken = authTokenMatcher.group(1);
-        }
-
-        authToken = "Basic " + encodeString("riot:" + authToken);
-
-        this.authToken = authToken;
-        this.appPort = appPort;
-
+        return objectMapper.valueToTree("There was an error during the initialization of connector");
     }
 
-    //Base64 encoding for authToken
-    private String encodeString(String input) {
-        byte[] encodedBytes = Base64.getEncoder().encode(input.getBytes(StandardCharsets.UTF_8));
-        return new String(encodedBytes, StandardCharsets.UTF_8);
-    }
-
-    //get,post,put,delete requests for the LCU api, uses non-blocking logic, currently I am converting
-    // it to blocking with .block(), later on can be changed to non-block for better performance.
-    public JsonNode get(String endpoint){
-        return client.get()
-                .uri(endpoint)
-                .retrieve()
-                .bodyToMono(JsonNode.class)
-                .block();
-    }
-
-
-    public void post(String endpoint){
-        client.post()
-                .uri(endpoint)
-                .contentType(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-    }
-
-    public void post(String endpoint, String postData){
-        client.post()
-                .uri(endpoint)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(Mono.just(postData), String.class)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-    }
-
-    public void put(String endpoint){
-        client.put()
-                .uri(endpoint)
-                .contentType(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-    }
-
-    public void put(String endpoint, String putData){
-        client.put()
-                .uri(endpoint)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(Mono.just(putData), String.class)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-    }
-
-    public void delete(String endpoint){
-        client.delete()
-                .uri(endpoint)
-                .retrieve()
-                .bodyToMono(String.class);
-    }
-
-    //Shows appPort and authToken
-    public void printInfo(){
+    public void printInfo() {
         System.out.println(this.appPort + this.authToken);
     }
 }

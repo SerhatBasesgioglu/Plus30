@@ -1,12 +1,16 @@
 import axios from "axios";
 
-const handleClick = async () => {
+const createLobby = async (lobbyData) => {
+  console.log("Hey");
   try {
-    const response = await axios.get("http://localhost:8080/lobby/create");
-    console.log(response.data);
+    const response = await axios.post("http://localhost:8080/lobby/create", {
+      lobbyName: lobbyData.lobbyname,
+      lobbyPassword: lobbyData.lobbypassword,
+    });
+    console.log(response);
   } catch (error) {
     console.error("Error fetching data:", error);
   }
 };
 
-export default handleClick;
+export default createLobby;
