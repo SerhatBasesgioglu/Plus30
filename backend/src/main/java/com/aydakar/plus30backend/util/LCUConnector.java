@@ -67,8 +67,8 @@ public class LCUConnector {
 
     public JsonNode post(String endPoint){
         return execute("post", endPoint, null);
-
     }
+
     public JsonNode post(String endPoint, JsonNode data){
         return execute("post", endPoint, data);
     }

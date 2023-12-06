@@ -1,6 +1,7 @@
 package com.aydakar.plus30backend.controller;
 
 import com.aydakar.plus30backend.service.LobbyService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +24,8 @@ public class LobbyController {
     }
 
     @PostMapping("create")
-    public JsonNode createLobby(@RequestBody JsonNode requestBody){
-        return lobbyService.createLobby();
+    public JsonNode createLobby(@RequestBody JsonNode inputs) {
+        return lobbyService.createLobby(inputs);
     }
 
     @GetMapping("auto-kicker")
