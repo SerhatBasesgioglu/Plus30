@@ -3,6 +3,7 @@ import getAllLobbies from "../services/getAllLobbies";
 
 const LobbyList = () => {
   const [lobbies, setLobbies] = useState([]);
+  const [filters, setFilters] = useState({});
   let data;
 
   const lobbyData = async () => {
