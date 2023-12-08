@@ -23,6 +23,7 @@ public class LobbyService {
 
     public JsonNode allLobbies(){
         try {
+            connector.post("/lol-lobby/v1/custom-games/refresh");
             return connector.get("/lol-lobby/v1/custom-games");
 
         } catch (Exception e) {
