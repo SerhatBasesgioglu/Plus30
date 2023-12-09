@@ -3,7 +3,9 @@ import getAllLobbies from "../services/getAllLobbies";
 
 const LobbyList = () => {
   const [lobbies, setLobbies] = useState([]);
-  const [filters, setFilters] = useState({});
+  const [filters, setFilters] = useState({
+    hidePasswordProtected: false,
+  });
   let data;
 
   const lobbyData = async () => {
@@ -24,8 +26,19 @@ const LobbyList = () => {
   return (
     <div>
       <button type="button" className="btn btn-info" onClick={lobbyData}>
-        Click Me
+        Refresh Lobbies
       </button>
+      <div className="form-group">
+        <label>Hide password lobbies</label>
+        <input
+          type="checkbox"
+          checked={filters.hidePasswordProtected}
+          onChange={(e) =>
+            setFilters({ ...filters, hidePasswordProtected: e.target.checked })
+          }
+        />
+      </div>
+
       <div>
         <table className="table-sm table-bordered">
           <thead>
@@ -40,20 +53,25 @@ const LobbyList = () => {
           </thead>
           <tbody>
             {lobbies &&
-              lobbies.map((lobby) => (
-                <tr key={lobby.id}>
-                  <td>{lobby.hasPassword}</td>
-                  <td>{lobby.lobbyName}</td>
-                  <td>{lobby.ownerDisplayName}</td>
-                  <td>{lobby.gameType}</td>
-                  <td>
-                    {lobby.filledPlayerSlots}/{lobby.maxPlayerSlots}
-                  </td>
-                  <td>
-                    {lobby.filledSpectatorSlots}/{lobby.maxSpectatorSlots}
-                  </td>
-                </tr>
-              ))}
+              lobbies
+                .filter(
+                  (lobby) =>
+                    !(filters.hidePasswordProtected && lobby.hasPassword)
+                )
+                .map((lobby) => (
+                  <tr key={lobby.id}>
+                    <td>{lobby.hasPassword && "key"}</td>
+                    <td>{lobby.lobbyName}</td>
+                    <td>{lobby.ownerDisplayName}</td>
+                    <td>{lobby.gameType}</td>
+                    <td>
+                      {lobby.filledPlayerSlots}/{lobby.maxPlayerSlots}
+                    </td>
+                    <td>
+                      {lobby.filledSpectatorSlots}/{lobby.maxSpectatorSlots}
+                    </td>
+                  </tr>
+                ))}
           </tbody>
         </table>
       </div>
