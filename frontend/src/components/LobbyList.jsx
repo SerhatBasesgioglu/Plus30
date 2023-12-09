@@ -1,10 +1,12 @@
 import { useState } from "react";
 import getAllLobbies from "../services/getAllLobbies";
+import joinLobby from "../services/joinLobby";
 
 const LobbyList = () => {
   const [lobbies, setLobbies] = useState([]);
   const [filters, setFilters] = useState({
     hidePasswordProtected: false,
+    hideDefault: false,
   });
   let data;
 
@@ -23,6 +25,20 @@ const LobbyList = () => {
     console.log(data);
   };
 
+  const handleRowClick = async (id) => {
+    return joinLobby(id);
+  };
+
+  const applyFilters = (lobby) => {
+    if (filters.hidePasswordProtected && lobby.hasPassword) return false;
+    if (
+      (filters.hideDefault && lobby.lobbyName.includes("oyunu")) ||
+      lobby.lobbyName.includes("game")
+    )
+      return false;
+    return true;
+  };
+
   return (
     <div>
       <button type="button" className="btn btn-info" onClick={lobbyData}>
@@ -36,6 +52,16 @@ const LobbyList = () => {
           onChange={(e) =>
             setFilters({ ...filters, hidePasswordProtected: e.target.checked })
           }
+        />
+      </div>
+      <div className="form-group">
+        <label>Hide default lobbies</label>
+        <input
+          type="checkbox"
+          checked={filters.hideDefault}
+          onChange={(e) => {
+            setFilters({ ...filters, hideDefault: e.target.checked });
+          }}
         />
       </div>
 
@@ -53,25 +79,20 @@ const LobbyList = () => {
           </thead>
           <tbody>
             {lobbies &&
-              lobbies
-                .filter(
-                  (lobby) =>
-                    !(filters.hidePasswordProtected && lobby.hasPassword)
-                )
-                .map((lobby) => (
-                  <tr key={lobby.id}>
-                    <td>{lobby.hasPassword && "key"}</td>
-                    <td>{lobby.lobbyName}</td>
-                    <td>{lobby.ownerDisplayName}</td>
-                    <td>{lobby.gameType}</td>
-                    <td>
-                      {lobby.filledPlayerSlots}/{lobby.maxPlayerSlots}
-                    </td>
-                    <td>
-                      {lobby.filledSpectatorSlots}/{lobby.maxSpectatorSlots}
-                    </td>
-                  </tr>
-                ))}
+              lobbies.filter(applyFilters).map((lobby) => (
+                <tr key={lobby.id} onClick={() => handleRowClick(lobby.id)}>
+                  <td>{lobby.hasPassword && "key"}</td>
+                  <td>{lobby.lobbyName}</td>
+                  <td>{lobby.ownerDisplayName}</td>
+                  <td>{lobby.gameType}</td>
+                  <td>
+                    {lobby.filledPlayerSlots}/{lobby.maxPlayerSlots}
+                  </td>
+                  <td>
+                    {lobby.filledSpectatorSlots}/{lobby.maxSpectatorSlots}
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>

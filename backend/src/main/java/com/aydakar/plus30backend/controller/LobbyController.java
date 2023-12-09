@@ -18,19 +18,24 @@ public class LobbyController {
         this.lobbyService = lobbyService;
     }
 
-    @GetMapping("all-lobbies")
+    @GetMapping("/all-lobbies")
     public JsonNode allLobbies() {
         return lobbyService.allLobbies();
     }
 
-    @PostMapping("create")
+    @PostMapping("/create")
     public JsonNode createLobby(@RequestBody JsonNode inputs) {
         return lobbyService.createLobby(inputs);
     }
 
-    @GetMapping("auto-kicker")
+    @GetMapping("/auto-kicker")
     //@Scheduled(fixedRate=1000)
     public JsonNode autoKicker() {
         return lobbyService.autoKicker();
+    }
+
+    @PostMapping("/join")
+    public JsonNode joinLobby(@RequestBody JsonNode inputs){
+        return lobbyService.joinLobby(inputs);
     }
 }

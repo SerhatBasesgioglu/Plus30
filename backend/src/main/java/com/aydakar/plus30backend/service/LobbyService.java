@@ -111,4 +111,12 @@ public class LobbyService {
         return null;
     }
 
+    public JsonNode joinLobby(JsonNode inputs){
+        JsonNode lobbyIdJson = inputs.get("lobbyId");
+        String lobbyId = lobbyIdJson.asText();
+        ObjectNode data = objectMapper.createObjectNode();
+        //data.put("password", "");
+        //data.put("asSpectator", true);
+        return connector.post("/lol-lobby/v1/custom-games/"+lobbyId+"/join",data);
+    }
 }
