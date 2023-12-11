@@ -24,7 +24,7 @@ Plus30 aims to automate some tasks for the custom game lobbies (Centered around 
  Backend
 
 - Change connector from sync to async
-- Implement websocket (Currently timer calls functions, websocket will call them when an event happens)
+- Implement websocket (Currently some functions are called using timers (auto-kick system), websocket will call them when an event happens)
 - Implement DTO
 
  Frontend
@@ -42,7 +42,11 @@ Plus30 aims to automate some tasks for the custom game lobbies (Centered around 
 
 # Setup
 
-Not available yet. Backend->Jar, Frontend->Build and merging them in Electron can be used the create the app at the moment.
+Release is not available, backend and frontend servers can be run on IntelliJ and VS Code respectively.
+For creating an executable following is possible:
+Backend->Jar (.\mvnw clean package)
+Frontend->Build (npm run build)
+Merge these in an Electron application, create the executable using electron builder.
 
 # Issues / Contributions
 
