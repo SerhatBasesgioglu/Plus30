@@ -1,4 +1,6 @@
 # Plus30
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FSerhatBasesgioglu%2FPlus30.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FSerhatBasesgioglu%2FPlus30?ref=badge_shield)
+
 
 Currently on development!
 
@@ -66,3 +68,7 @@ I did not register the app to Developer Portal yet, use it at your own risk.
 I am prioritizing the technologies that I am learning (Spring Boot, Electron, ReactJs) instead of focusing on performance, RAM usage and storage of the project will be relatively high.
 
 Plus30 isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FSerhatBasesgioglu%2FPlus30.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FSerhatBasesgioglu%2FPlus30?ref=badge_large)
