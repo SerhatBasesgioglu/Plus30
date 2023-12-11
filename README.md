@@ -43,9 +43,13 @@ Plus30 aims to automate some tasks for the custom game lobbies (Centered around 
 # Setup
 
 Release is not available, backend and frontend servers can be run on IntelliJ and VS Code respectively.
+
 For creating an executable following is possible:
+
 Backend->Jar (.\mvnw clean package)
+
 Frontend->Build (npm run build)
+
 Merge these in an Electron application, create the executable using electron builder.
 
 # Issues / Contributions
