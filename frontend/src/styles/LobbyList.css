@@ -1,0 +1,22 @@
+.col-key {
+  width: 10%;
+}
+.col-lobby-name {
+  width: 20%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.col-lobby-owner {
+  width: 20%;
+}
+.col-map-name {
+  width: 20%;
+}
+
+.col-player {
+  width: 15%;
+}
+.col-spectator {
+  width: 15%;
+}
