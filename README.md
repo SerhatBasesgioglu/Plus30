@@ -4,13 +4,13 @@ Currently on development!
 
 Plus30 aims to automate some tasks for the custom game lobbies (Centered around Howling Abyss).
 
-## Current Features
+# Current Features
 
 - Blacklisting blocked players
 - Creating lobby
 - Filtering/entering lobbies
 
-## Planned Features
+# Planned Features
 
 - Lobby Presets
 - Auto Invite
@@ -19,32 +19,40 @@ Plus30 aims to automate some tasks for the custom game lobbies (Centered around 
 - Discord Integration (?)
 - Custom Ban/Pick System For Champion Selection (?)
 
-## TO DO
+# TO DO
 
-# Backend
+ Backend
 
 - Change connector from sync to async
-- Implement websocket (Currently timer calls functions, websocket will call them when an event happens)
+- Implement websocket (Currently some functions are called using timers (auto-kick system), websocket will call them when an event happens)
 - Implement DTO
 
-# Frontend
+ Frontend
 
 - Import frontend into an electron instance
 - Organize components/scripts
 - Add bootstrap for better design
 
-# General
+ General
 
 - Implement proper error handling
 - Write unit test
 - Implement security
 - Implement automation for releases
 
-## Setup
+# Setup
 
-Not available yet. Backend->Jar, Frontend->Build and merging them in Electron can be used the create the app at the moment.
+Release is not available, backend and frontend servers can be run on IntelliJ and VS Code respectively.
 
-## Issues / Contributions
+For creating an executable following is possible:
+
+Backend->Jar (.\mvnw clean package)
+
+Frontend->Build (npm run build)
+
+Merge these in an Electron application, create the executable using electron builder.
+
+# Issues / Contributions
 
 You can reach me with following channels, I appreciate the use of Issues page though (https://github.com/SerhatBasesgioglu/Plus30/issues)
 
@@ -52,7 +60,7 @@ You can reach me with following channels, I appreciate the use of Issues page th
 
 - Discord: aydakar
 
-## Disclaimer
+# Disclaimer
 
 I did not register the app to Developer Portal yet, use it at your own risk.
 I am prioritizing the technologies that I am learning (Spring Boot, Electron, ReactJs) instead of focusing on performance, RAM usage and storage of the project will be relatively high.
