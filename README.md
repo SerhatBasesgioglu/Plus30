@@ -21,19 +21,19 @@ Plus30 aims to automate some tasks for the custom game lobbies (Centered around 
 
 # TO DO
 
-## Backend
+ Backend
 
 - Change connector from sync to async
 - Implement websocket (Currently timer calls functions, websocket will call them when an event happens)
 - Implement DTO
 
-## Frontend
+ Frontend
 
 - Import frontend into an electron instance
 - Organize components/scripts
 - Add bootstrap for better design
 
-## General
+ General
 
 - Implement proper error handling
 - Write unit test
