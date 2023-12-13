@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import createLobby from "../services/createLobby";
 
-const LobbyForm = () => {
+const LobbyForm = ({ className }) => {
   const defaultLobby = {
     lobbyname: "",
     lobbypassword: "",
@@ -53,7 +53,7 @@ const LobbyForm = () => {
   }, []);
 
   return (
-    <div className="col-md-3">
+    <div className={className}>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Lobby Name</label>

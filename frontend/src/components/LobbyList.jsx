@@ -3,7 +3,7 @@ import "../styles/LobbyList.css";
 import getAllLobbies from "../services/getAllLobbies";
 import joinLobby from "../services/joinLobby";
 
-const LobbyList = () => {
+const LobbyList = ({ className }) => {
   const [lobbies, setLobbies] = useState([]);
   const [filters, setFilters] = useState({
     hidePasswordProtected: false,
@@ -41,7 +41,7 @@ const LobbyList = () => {
   };
 
   return (
-    <div className="col-6">
+    <div className={className}>
       <div className="row my-1">
         <button
           type="button"
@@ -75,10 +75,10 @@ const LobbyList = () => {
         </div>
       </div>
 
-      <div className="table-responsive" style={{ height: "600px" }}>
-        <table className="table table-sm table-bordered table-striped">
+      <div className="table-responsive" style={{ height: "500px" }}>
+        <table className="table table-sm">
           <thead>
-            <tr>
+            <tr className="table-info">
               <th className="col-key"></th>
               <th className="col-lobby-name">Lobby Name</th>
               <th className="col-lobby-owner">Owner</th>
@@ -87,10 +87,12 @@ const LobbyList = () => {
               <th className="col-spectator">Spectator</th>
             </tr>
           </thead>
-          <tbody style={{ height: "300px" }}>
+          <tbody>
             {lobbies &&
               lobbies.filter(applyFilters).map((lobby) => (
                 <tr
+                  className="table-info"
+                  style={{ height: "20px" }}
                   key={lobby.id}
                   onDoubleClick={() => handleRowClick(lobby.id)}
                 >

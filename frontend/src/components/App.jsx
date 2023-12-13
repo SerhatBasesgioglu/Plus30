@@ -5,11 +5,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (
-    <div className="App container">
+    <div className="App container bg-success bg-opacity-75">
       <Header />
       <div className="row">
-        <LobbyForm />
-        <LobbyList />
+        <LobbyForm className="col-4" />
+        <div className="col-2" />
+        <LobbyList className="col-6" />
       </div>
     </div>
   );
