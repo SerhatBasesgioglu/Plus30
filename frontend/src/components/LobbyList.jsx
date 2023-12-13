@@ -90,7 +90,10 @@ const LobbyList = () => {
           <tbody style={{ height: "300px" }}>
             {lobbies &&
               lobbies.filter(applyFilters).map((lobby) => (
-                <tr key={lobby.id} onClick={() => handleRowClick(lobby.id)}>
+                <tr
+                  key={lobby.id}
+                  onDoubleClick={() => handleRowClick(lobby.id)}
+                >
                   <td className="col-key">{lobby.hasPassword && "key"}</td>
                   <td className="col-lobby-name">{lobby.lobbyName}</td>
                   <td className="col-lobby-owner">{lobby.ownerDisplayName}</td>
