@@ -28,10 +28,13 @@ public class LobbyController {
         return lobbyService.createLobby(inputs);
     }
 
-    @GetMapping("/auto-kicker")
-    //@Scheduled(fixedRate=1000)
-    public JsonNode autoKicker() {
-        return lobbyService.autoKicker();
+    @GetMapping("/start-kicker")
+    public void startAutoKicker() {
+        lobbyService.startAutoKicker(1000);
+    }
+    @GetMapping("/stop-kicker")
+    public void stopVoidKicker(){
+        lobbyService.stopAutoKicker();
     }
 
     @PostMapping("/join")

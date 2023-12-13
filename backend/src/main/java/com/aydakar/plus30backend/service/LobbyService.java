@@ -1,11 +1,12 @@
 package com.aydakar.plus30backend.service;
 
 import com.aydakar.plus30backend.util.LCUConnector;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
+import java.util.concurrent.ScheduledFuture;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +15,13 @@ import java.util.List;
 public class LobbyService {
     private final LCUConnector connector;
     private final ObjectMapper objectMapper;
+    private final TaskScheduler taskScheduler;
+    private ScheduledFuture<?> scheduledFuture;
 
-    public LobbyService(LCUConnector connector, ObjectMapper objectMapper) {
+    public LobbyService(LCUConnector connector, ObjectMapper objectMapper, TaskScheduler taskScheduler) {
         this.connector = connector;
         this.objectMapper = objectMapper;
+        this.taskScheduler = taskScheduler;
         connector.connect();
     }
 
@@ -80,7 +84,21 @@ public class LobbyService {
         return connector.post("/lol-lobby/v2/lobby", rootNode);
     }
 
-    public JsonNode autoKicker(){
+    public void startAutoKicker(long rate){
+        if (scheduledFuture == null || scheduledFuture.isCancelled()) {
+            scheduledFuture = taskScheduler.scheduleAtFixedRate(this::autoKicker, rate);
+        }
+    }
+
+    public void stopAutoKicker(){
+        if (scheduledFuture != null) {
+            scheduledFuture.cancel(true);
+        }
+    }
+
+
+
+    private JsonNode autoKicker(){
         try {
             List<String> memberList = new ArrayList<>();
             List<String> blockedList = new ArrayList<>();
