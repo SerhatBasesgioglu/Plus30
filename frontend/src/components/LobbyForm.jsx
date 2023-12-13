@@ -47,12 +47,10 @@ const LobbyForm = () => {
     setInputs(defaultLobby);
   };
 
-  /*
   useEffect(() => {
     const savedPresets = localStorage.getItem("presets");
-    if (savedPresets) setPresets(savedPresets);
+    if (savedPresets) setPresets(JSON.parse(savedPresets));
   }, []);
-*/
 
   return (
     <div className="col-md-3">
