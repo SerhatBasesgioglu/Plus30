@@ -9,10 +9,10 @@ Plus30 aims to automate some tasks for the custom game lobbies (Centered around 
 - Blacklisting blocked players
 - Creating lobby
 - Filtering/entering lobbies
+- Lobby Presets
 
 # Planned Features
 
-- Lobby Presets
 - Auto Invite
 - Extensive Whitelist/Blacklist implementation
 - Custom Stats
@@ -26,12 +26,13 @@ Plus30 aims to automate some tasks for the custom game lobbies (Centered around 
 - Change connector from sync to async
 - Implement websocket (Currently some functions are called using timers (auto-kick system), websocket will call them when an event happens)
 - Implement DTO
+- Add a connection to an online db (plus30lol.com will contain an endpoint for fetching global kick list)
 
  Frontend
 
 - Import frontend into an electron instance
-- Organize components/scripts
-- Add bootstrap for better design
+- Add pop ups for better user experience (Lobby created, lobby is full, etc.)
+- Implement auto-kick toggle, add options (only blocked players, import from local or online list, etc.)
 
  General
 
@@ -44,13 +45,13 @@ Plus30 aims to automate some tasks for the custom game lobbies (Centered around 
 
 Release is not available, backend and frontend servers can be run on IntelliJ and VS Code respectively.
 
-For creating an executable following is possible:
+An executable can be created using the following steps:
 
 Backend->Jar (.\mvnw clean package)
 
 Frontend->Build (npm run build)
 
-Merge these in an Electron application, create the executable using electron builder.
+Merge these in an Electron application, create the executable using electron builder. Jar should be called by the frontend app and it should be closed by it as well. Otherwise backend instance will continue to run on background. If that is the case it can be closed from task manager.
 
 # Issues / Contributions
 
@@ -62,7 +63,7 @@ You can reach me with following channels, I appreciate the use of Issues page th
 
 # Disclaimer
 
-I did not register the app to Developer Portal yet, use it at your own risk.
+App is currently on "Pending Review" at Riot Developer Portal which means it is not apporoved by Riot yet, use it at your own risk.
 I am prioritizing the technologies that I am learning (Spring Boot, Electron, ReactJs) instead of focusing on performance, RAM usage and storage of the project will be relatively high.
 
 Plus30 isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
