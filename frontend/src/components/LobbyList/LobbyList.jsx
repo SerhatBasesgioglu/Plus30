@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./LobbyList.css";
-import getAllLobbies from "../../services/getAllLobbies";
-import joinLobby from "../../services/joinLobby";
+import getAllLobbies from "./getAllLobbies";
+import joinLobby from "./joinLobby";
 
 const LobbyList = ({ className }) => {
   const [lobbies, setLobbies] = useState([]);

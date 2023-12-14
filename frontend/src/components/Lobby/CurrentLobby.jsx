@@ -1,8 +1,20 @@
 const CurrentLobby = ({ className }) => {
   return (
     <div className={className}>
-      <p>Current lobby</p>
-      <p>Fill with data if you are in a lobby</p>
+      <table className="table table-sm">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Level</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import createLobby from "../../services/createLobby";
+import createLobby from "./createLobby";
 
 const LobbyForm = ({ className }) => {
   const defaultLobby = {
