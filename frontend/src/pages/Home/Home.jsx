@@ -1,9 +1,8 @@
-import LobbyForm from "./LobbyForm";
-import Header from "./Header";
-import LobbyList from "./LobbyList";
-import "bootstrap/dist/css/bootstrap.min.css";
+import Header from "../../components/Header/Header";
+import LobbyForm from "../../components/LobbyForm/LobbyForm";
+import LobbyList from "../../components/LobbyList/LobbyList";
 
-function App() {
+const Home = () => {
   return (
     <div className="App container bg-success bg-opacity-75">
       <Header />
@@ -14,6 +13,6 @@ function App() {
       </div>
     </div>
   );
-}
+};
 
-export default App;
+export default Home;
