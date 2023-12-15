@@ -21,20 +21,24 @@ Plus30 aims to automate some tasks for the custom game lobbies (Centered around 
 
 # TO DO
 
- Backend
+Backend
 
 - Change connector from sync to async
-- Implement websocket (Currently some functions are called using timers (auto-kick system), websocket will call them when an event happens)
+- Implement websocket client (Currently some functions are called using timers (auto-kick system), websocket will call them when an event happens)
+- Implement websocket server
 - Implement DTO
 - Add a connection to an online db (plus30lol.com will contain an endpoint for fetching global kick list)
 
- Frontend
+Frontend
 
+- Add current lobby data
 - Import frontend into an electron instance
+- Implement websocket client
+- Centralize api requests (facade pattern?)
 - Add pop ups for better user experience (Lobby created, lobby is full, etc.)
 - Implement auto-kick toggle, add options (only blocked players, import from local or online list, etc.)
 
- General
+General
 
 - Implement proper error handling
 - Write unit test
