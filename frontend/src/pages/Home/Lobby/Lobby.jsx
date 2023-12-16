@@ -1,4 +1,4 @@
-const CurrentLobby = ({ className }) => {
+const Lobby = ({ className }) => {
   return (
     <div className={className}>
       <table className="table table-sm">
@@ -19,4 +19,4 @@ const CurrentLobby = ({ className }) => {
   );
 };
 
-export default CurrentLobby;
+export default Lobby;

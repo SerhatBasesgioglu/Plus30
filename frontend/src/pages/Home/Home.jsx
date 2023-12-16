@@ -1,7 +1,7 @@
-import Header from "../../components/Header";
-import LobbyForm from "../../components/LobbyForm";
-import LobbyList from "../../components/LobbyList";
-import Lobby from "../../components/Lobby";
+import Header from "./Header";
+import LobbyForm from "./LobbyForm";
+import LobbyList from "./LobbyList";
+import Lobby from "./Lobby";
 
 const Home = () => {
   return (

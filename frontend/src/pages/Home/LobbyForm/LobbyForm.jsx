@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import createLobby from "./createLobby";
+import ToggleButton from "../../../components/ToggleButton";
+import Button from "../../../components/Button";
 
 const LobbyForm = ({ className }) => {
   const defaultLobby = {
@@ -51,6 +53,8 @@ const LobbyForm = ({ className }) => {
     const savedPresets = localStorage.getItem("presets");
     if (savedPresets) setPresets(JSON.parse(savedPresets));
   }, []);
+
+  const [isToggled, setIsToggled] = useState();
 
   return (
     <div className={className}>
@@ -116,28 +120,32 @@ const LobbyForm = ({ className }) => {
             <option value="NotAllowed">Not</option>
           </select>
           <div className="my-2">
-            <input type="submit" className="btn btn-secondary" />
-            <button
+            <Button
+              text="Submit"
+              type="submit"
+              className="btn btn-secondary"
+            ></Button>
+
+            <Button
+              text="Save"
               type="button"
               className="btn btn-info mx-2"
               onClick={handleSave}
-            >
-              Save
-            </button>
-            <button
+            />
+
+            <Button
+              text="Load"
               type="button"
               className="btn btn-info mx-2"
               onClick={handleLoad}
-            >
-              Load
-            </button>
-            <button
+            />
+
+            <Button
+              text="Clear"
               type="button"
               className="btn btn-info mx-2"
               onClick={handleClear}
-            >
-              Clear
-            </button>
+            />
           </div>
         </div>
       </form>
