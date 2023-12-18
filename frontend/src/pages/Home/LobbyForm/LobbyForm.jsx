@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import createLobby from "./createLobby";
-import ToggleButton from "../../../components/ToggleButton";
 import Button from "../../../components/Button";
 
 const LobbyForm = ({ className }) => {
