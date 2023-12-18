@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./LobbyList.css";
 import getAllLobbies from "./getAllLobbies";
 import joinLobby from "./joinLobby";
+import Table from "../../../components/Table/Table";
 
 const LobbyList = ({ className }) => {
   const [lobbies, setLobbies] = useState([]);
@@ -9,10 +10,9 @@ const LobbyList = ({ className }) => {
     hidePasswordProtected: false,
     hideDefault: false,
   });
-  let data;
 
   const lobbyData = async () => {
-    data = await getAllLobbies();
+    let data = await getAllLobbies();
     data.sort((a, b) => {
       if (a.lobbyName < b.lobbyName) {
         return -1;
@@ -39,6 +39,26 @@ const LobbyList = ({ className }) => {
       return false;
     return true;
   };
+
+  const columns = [
+    { header: "Key", accessor: (row) => (row.hasPassword ? "🔒" : "") },
+    { header: "Lobby Name", accessor: "lobbyName" },
+    { header: "Owner", accessor: "ownerDisplayName" },
+    {
+      header: "Map",
+      accessor: (row) => {
+        return row.gameType === "ARAM" ? "Howling Abyss" : "Summoners Rift";
+      },
+    },
+    {
+      header: "Player",
+      accessor: (row) => `${row.filledPlayerSlots}/${row.maxPlayerSlots}`,
+    },
+    {
+      header: "Spectator",
+      accessor: (row) => `${row.filledSpectatorSlots}/${row.maxSpectatorSlots}`,
+    },
+  ];
 
   return (
     <div className={className}>
@@ -75,42 +95,13 @@ const LobbyList = ({ className }) => {
         </div>
       </div>
 
-      <div className="table-responsive" style={{ height: "500px" }}>
-        <table className="table table-sm">
-          <thead>
-            <tr className="table-info">
-              <th className="col-key"></th>
-              <th className="col-lobby-name">Lobby Name</th>
-              <th className="col-lobby-owner">Owner</th>
-              <th className="col-map-name">Map</th>
-              <th className="col-player">Player</th>
-              <th className="col-spectator">Spectator</th>
-            </tr>
-          </thead>
-          <tbody>
-            {lobbies &&
-              lobbies.filter(applyFilters).map((lobby) => (
-                <tr
-                  className="table-info"
-                  style={{ height: "20px" }}
-                  key={lobby.id}
-                  onDoubleClick={() => handleRowClick(lobby.id)}
-                >
-                  <td className="col-key">{lobby.hasPassword && "key"}</td>
-                  <td className="col-lobby-name">{lobby.lobbyName}</td>
-                  <td className="col-lobby-owner">{lobby.ownerDisplayName}</td>
-                  <td className="col-map-name">{lobby.gameType}</td>
-                  <td className="col-player">
-                    {lobby.filledPlayerSlots}/{lobby.maxPlayerSlots}
-                  </td>
-                  <td className="col-spectator">
-                    {lobby.filledSpectatorSlots}/{lobby.maxSpectatorSlots}
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-      </div>
+      <Table
+        className="table table-sm table-info"
+        columns={columns}
+        data={lobbies}
+        filters={applyFilters}
+        handleRowDoubleClick={(row) => handleRowClick(row.id)}
+      />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import Table from "../../components/Table";
+import Table from "../../components/Table/Table";
 
 const Test = () => {
   const columns = [
@@ -28,7 +28,7 @@ const Test = () => {
     },
   ];
 
-  const dataa = {
+  const data1 = {
     key: "key",
     lobbyName: "AyDakar Lobby",
     owner: "AyDaKaR",
@@ -36,11 +36,19 @@ const Test = () => {
     player: "player",
     spectator: "spectator",
   };
+  const data2 = {
+    key: "zkey",
+    lobbyName: "zAyDakar Lobby",
+    owner: "zAyDaKaR",
+    map: "zmap",
+    player: "zplayer",
+    spectator: "zspectator",
+  };
 
   let dataarray = [];
 
   for (let x = 0; x < 100; x++) {
-    dataarray[x] = dataa;
+    dataarray[x] = x < 50 ? data1 : data2;
   }
 
   return (
