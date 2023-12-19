@@ -11,8 +11,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CommandLineFetcher {
-    public static Map<String,String> commandLineFetch(){
+public class CommandLine {
+    public static Map<String,String> getCredentials(){
         String command = "wmic PROCESS WHERE name='LeagueClientUx.exe' GET commandline";
         StringBuilder output = new StringBuilder();
         Map<String, String> resultMap = new HashMap<>();
@@ -63,6 +63,15 @@ public class CommandLineFetcher {
         resultMap.put("appPort", appPort);
 
         return resultMap;
+    }
+
+    public static void resetClientUx(){
+        String command = "taskkill /IM \"LeagueClientUx.exe\" /F";
+        try{
+            ProcessBuilder processBuilder = new ProcessBuilder(command.split("\\s+"));
+            Process process = processBuilder.start();
+        }catch(Exception ignored){}
+
     }
 
     private static String encodeString(String input) {

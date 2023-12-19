@@ -15,7 +15,9 @@ import reactor.netty.http.client.HttpClient;
 
 import javax.net.ssl.SSLException;
 
-import static com.aydakar.plus30backend.util.CommandLineFetcher.commandLineFetch;
+import java.util.Map;
+
+import static com.aydakar.plus30backend.util.CommandLine.getCredentials;
 
 @Component
 public class LCUConnector {
@@ -23,10 +25,11 @@ public class LCUConnector {
     private final String authToken;
     WebClient client;
     ObjectMapper objectMapper;
+    Map<String, String> credentials = getCredentials();
 
     public LCUConnector(ObjectMapper objectMapper) {
-        this.appPort = commandLineFetch().get("appPort");
-        this.authToken = commandLineFetch().get("authToken");
+        this.appPort = credentials.get("appPort");
+        this.authToken = credentials.get("authToken");
         this.objectMapper = objectMapper;
     }
 

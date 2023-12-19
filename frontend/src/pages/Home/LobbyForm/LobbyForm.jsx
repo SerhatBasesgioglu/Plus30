@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
-import createLobby from "./createLobby";
 import Button from "../../../components/Button";
+import { post } from "../../../services/api";
 
 const LobbyForm = ({ className }) => {
   const defaultLobby = {
-    lobbyname: "",
-    lobbypassword: "",
-    mapid: "12",
-    teamsize: "1",
-    spectatorpolicy: "AllAllowed",
+    lobbyName: "",
+    lobbyPassword: "",
+    mapId: "12",
+    teamSize: "1",
+    spectatorPolicy: "AllAllowed",
   };
 
   const [inputs, setInputs] = useState(defaultLobby);
@@ -19,9 +19,9 @@ const LobbyForm = ({ className }) => {
     defaultLobby,
   ]);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    createLobby(inputs);
+    await post("/lobby/create", inputs);
   };
 
   const handleChange = (event) => {
@@ -60,8 +60,8 @@ const LobbyForm = ({ className }) => {
           <input
             className="form-control"
             type="text"
-            name="lobbyname"
-            value={inputs.lobbyname}
+            name="lobbyName"
+            value={inputs.lobbyName}
             onChange={handleChange}
           />
         </div>
@@ -70,8 +70,8 @@ const LobbyForm = ({ className }) => {
           <input
             className="form-control"
             type="text"
-            name="lobbypassword"
-            value={inputs.lobbypassword}
+            name="lobbyPassword"
+            value={inputs.lobbyPassword}
             onChange={handleChange}
           />
         </div>
@@ -79,8 +79,8 @@ const LobbyForm = ({ className }) => {
           <label>Game Type</label>
           <select
             className="form-control"
-            name="mapid"
-            value={inputs.mapid}
+            name="mapId"
+            value={inputs.mapId}
             onChange={handleChange}
           >
             <option value={12}>Howling Abyss</option>
@@ -91,8 +91,8 @@ const LobbyForm = ({ className }) => {
           <label>Team Size</label>
           <select
             className="form-control"
-            name="teamsize"
-            value={inputs.teamsize}
+            name="teamSize"
+            value={inputs.teamSize}
             onChange={handleChange}
           >
             <option value={1}>1</option>
@@ -106,8 +106,8 @@ const LobbyForm = ({ className }) => {
           <label>Spectator</label>
           <select
             className="form-control"
-            name="spectatorpolicy"
-            value={inputs.spectatorpolicy}
+            name="spectatorPolicy"
+            value={inputs.spectatorPolicy}
             onChange={handleChange}
           >
             <option value="AllAllowed">All</option>

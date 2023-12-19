@@ -1,9 +1,8 @@
 import { useState } from "react";
 import "./LobbyList.css";
-import getAllLobbies from "./getAllLobbies";
-import joinLobby from "./joinLobby";
 import Table from "../../../components/Table/Table";
 import Button from "../../../components/Button";
+import { get, post } from "../../../services/api";
 
 const LobbyList = ({ className }) => {
   const [lobbies, setLobbies] = useState([]);
@@ -13,7 +12,7 @@ const LobbyList = ({ className }) => {
   });
 
   const lobbyData = async () => {
-    let data = await getAllLobbies();
+    let data = await get("/lobby/all-lobbies");
     data.sort((a, b) => {
       if (a.lobbyName < b.lobbyName) {
         return -1;
@@ -27,8 +26,8 @@ const LobbyList = ({ className }) => {
     console.log(data);
   };
 
-  const handleRowClick = async (id) => {
-    return joinLobby(id);
+  const joinLobby = async (id) => {
+    return post("/lobby/join", { lobbyId: id });
   };
 
   const applyFilters = (lobby) => {
@@ -111,7 +110,7 @@ const LobbyList = ({ className }) => {
         columns={columns}
         data={lobbies}
         filters={applyFilters}
-        handleRowDoubleClick={(row) => handleRowClick(row.id)}
+        handleRowDoubleClick={(row) => joinLobby(row.id)}
       />
     </div>
   );
