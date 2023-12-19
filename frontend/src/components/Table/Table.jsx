@@ -1,12 +1,22 @@
 import "./Table.css";
 const Table = ({ columns, data, className, filters, handleRowDoubleClick }) => {
+  const totalRatio = columns.reduce(
+    (acc, column) => acc + column.widthRatio,
+    0
+  );
+
   return (
     <div className="table-container">
       <table className={className}>
         <thead>
           <tr>
             {columns.map((column, columnIndex) => (
-              <th key={columnIndex}>{column.header}</th>
+              <th
+                key={columnIndex}
+                style={{ width: `${(column.widthRatio / totalRatio) * 100}%` }}
+              >
+                {column.header}{" "}
+              </th>
             ))}
           </tr>
         </thead>

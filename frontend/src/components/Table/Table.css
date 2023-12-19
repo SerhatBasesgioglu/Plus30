@@ -1,5 +1,9 @@
 .table-container {
-  max-height: 500px; /* Adjust the height as needed */
+  max-height: 500px;
   overflow-y: auto;
   width: 100%;
+}
+.table-container table tbody tr td {
+  cursor: default;
+  user-select: none;
 }

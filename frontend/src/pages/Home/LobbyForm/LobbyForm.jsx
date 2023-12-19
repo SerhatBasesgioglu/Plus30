@@ -12,13 +12,12 @@ const LobbyForm = ({ className }) => {
   };
 
   const [inputs, setInputs] = useState(defaultLobby);
-
+  const [presetIndex, setPresetIndex] = useState(0);
   const [presets, setPresets] = useState([
     defaultLobby,
     defaultLobby,
     defaultLobby,
   ]);
-  const [presetIndex, setPresetIndex] = useState(0);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -52,8 +51,6 @@ const LobbyForm = ({ className }) => {
     const savedPresets = localStorage.getItem("presets");
     if (savedPresets) setPresets(JSON.parse(savedPresets));
   }, []);
-
-  const [isToggled, setIsToggled] = useState();
 
   return (
     <div className={className}>
@@ -150,36 +147,30 @@ const LobbyForm = ({ className }) => {
       </form>
       <div>
         <p className="mt-4">Presets</p>
-        <button
+
+        <Button
           className={`btn btn-info mx-2 ${
             presetIndex === 0 ? "bg-primary" : "bg-secondary"
           }`}
-          onClick={() => {
-            setPresetIndex(0);
-          }}
-        >
-          1
-        </button>
-        <button
+          onClick={() => setPresetIndex(0)}
+          text="1"
+        />
+
+        <Button
           className={`btn btn-info mx-2 ${
             presetIndex === 1 ? "bg-primary" : "bg-secondary"
           }`}
-          onClick={() => {
-            setPresetIndex(1);
-          }}
-        >
-          2
-        </button>
-        <button
+          onClick={() => setPresetIndex(1)}
+          text="2"
+        />
+
+        <Button
           className={`btn btn-info mx-2 ${
             presetIndex === 2 ? "bg-primary" : "bg-secondary"
           }`}
-          onClick={() => {
-            setPresetIndex(2);
-          }}
-        >
-          3
-        </button>
+          onClick={() => setPresetIndex(2)}
+          text="3"
+        />
       </div>
     </div>
   );

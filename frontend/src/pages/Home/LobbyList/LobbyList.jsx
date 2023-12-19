@@ -3,6 +3,7 @@ import "./LobbyList.css";
 import getAllLobbies from "./getAllLobbies";
 import joinLobby from "./joinLobby";
 import Table from "../../../components/Table/Table";
+import Button from "../../../components/Button";
 
 const LobbyList = ({ className }) => {
   const [lobbies, setLobbies] = useState([]);
@@ -41,35 +42,45 @@ const LobbyList = ({ className }) => {
   };
 
   const columns = [
-    { header: "Key", accessor: (row) => (row.hasPassword ? "🔒" : "") },
-    { header: "Lobby Name", accessor: "lobbyName" },
-    { header: "Owner", accessor: "ownerDisplayName" },
+    {
+      header: "Key",
+      accessor: (row) => (row.hasPassword ? "🔒" : ""),
+      widthRatio: 3,
+    },
+    { header: "Lobby Name", accessor: (row) => row.lobbyName, widthRatio: 15 },
+    {
+      header: "Owner",
+      accessor: (row) => row.ownerDisplayName,
+      widthRatio: 10,
+    },
     {
       header: "Map",
-      accessor: (row) => {
-        return row.gameType === "ARAM" ? "Howling Abyss" : "Summoners Rift";
-      },
+      accessor: (row) =>
+        row.gameType === "ARAM" ? "Howling Abyss" : "Summoners Rift",
+      widthRatio: 15,
     },
     {
       header: "Player",
       accessor: (row) => `${row.filledPlayerSlots}/${row.maxPlayerSlots}`,
+      widthRatio: 5,
     },
     {
       header: "Spectator",
       accessor: (row) => `${row.filledSpectatorSlots}/${row.maxSpectatorSlots}`,
+      widthRatio: 5,
     },
   ];
 
   return (
     <div className={className}>
       <div className="row my-1">
-        <button
+        <Button
+          className="btn btn-info  col-3"
           type="button"
-          className="btn btn-info col-3"
           onClick={lobbyData}
-        >
-          Refresh Lobbies
-        </button>
+          text="Refresh Lobbies"
+        />
+
         <div className="form-group col-4">
           <label>Hide password lobbies</label>
           <input
@@ -96,7 +107,7 @@ const LobbyList = ({ className }) => {
       </div>
 
       <Table
-        className="table table-sm table-info"
+        className="table table-sm table-info table-hover"
         columns={columns}
         data={lobbies}
         filters={applyFilters}

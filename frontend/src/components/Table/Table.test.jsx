@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import Table from "./Table";
+import Table from ".";
 
 describe("Table component", () => {
   const columns = [
