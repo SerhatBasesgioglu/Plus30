@@ -1,5 +1,6 @@
 package com.aydakar.plus30backend.util;
 
+import com.aydakar.plus30backend.entity.ApiError;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.handler.ssl.SslContext;
@@ -14,7 +15,7 @@ import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
 import javax.net.ssl.SSLException;
-
+import java.io.IOException;
 import java.util.Map;
 
 import static com.aydakar.plus30backend.util.CommandLine.getCredentials;
@@ -64,31 +65,32 @@ public class LCUConnector {
     better performance.
      */
 
-    public JsonNode get(String endPoint){
+    public JsonNode get(String endPoint) {
         return execute("get", endPoint, null);
     }
 
-    public JsonNode post(String endPoint){
+    public JsonNode post(String endPoint) {
         return execute("post", endPoint, null);
     }
 
-    public JsonNode post(String endPoint, JsonNode data){
+    public JsonNode post(String endPoint, JsonNode data) {
         return execute("post", endPoint, data);
     }
 
-    public JsonNode put(String endPoint){
+    public JsonNode put(String endPoint) {
         return execute("put", endPoint, null);
 
     }
-    public JsonNode put(String endPoint, JsonNode data){
+
+    public JsonNode put(String endPoint, JsonNode data) {
         return execute("put", endPoint, data);
     }
 
-    public JsonNode delete(String endPoint){
+    public JsonNode delete(String endPoint) {
         return execute("delete", endPoint, null);
     }
 
-    private JsonNode execute(String method, String endPoint, JsonNode data){
+    private JsonNode execute(String method, String endPoint, JsonNode data) {
         WebClient.ResponseSpec responseSpec = null;
         try {
             responseSpec = switch (method) {
@@ -104,16 +106,23 @@ public class LCUConnector {
             };
             if (responseSpec != null) {
                 JsonNode response = responseSpec.bodyToMono(JsonNode.class)
-                        .onErrorResume(WebClientResponseException.class, e ->
-                                Mono.just(e.getResponseBodyAs(JsonNode.class)))
                         .block();
                 System.out.println(response);
                 return response;
             }
-        }catch(Exception e) {
-            return objectMapper.valueToTree(e);
+        } catch (WebClientResponseException e) {
+            String responseBody = e.getResponseBodyAsString();
+            try {
+                ApiError apiError = objectMapper.readValue(responseBody, ApiError.class);
+                throw new CustomException(apiError.getHttpStatus(), apiError.getMessage());
+            } catch (IOException parseException) {
+                throw new CustomException(500, "Error parsing error response");
+            }
+
+        } catch (Exception e) {
+            throw new CustomException(500, "Internal Server Error: " + e.getMessage());
         }
-        return objectMapper.valueToTree("There was an error during the initialization of connector");
+        throw new CustomException(500, "Unknown error occurred");
     }
 
     public void printInfo() {

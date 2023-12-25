@@ -137,4 +137,8 @@ public class LobbyService {
         //data.put("asSpectator", true);
         return connector.post("/lol-lobby/v1/custom-games/"+lobbyId+"/join",data);
     }
+
+    public JsonNode members(){
+        return connector.get("/lol-lobby/v2/lobby/members");
+    }
 }

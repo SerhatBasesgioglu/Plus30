@@ -41,4 +41,9 @@ public class LobbyController {
     public JsonNode joinLobby(@RequestBody JsonNode inputs){
         return lobbyService.joinLobby(inputs);
     }
+
+    @GetMapping("/members")
+    public JsonNode members(){
+        return lobbyService.members();
+    }
 }
