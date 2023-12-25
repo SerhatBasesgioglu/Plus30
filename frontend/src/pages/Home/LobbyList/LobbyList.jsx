@@ -1,8 +1,8 @@
 import { useState } from "react";
 import "./LobbyList.css";
-import Table from "../../../components/Table/Table";
-import Button from "../../../components/Button";
-import { get, post } from "../../../services/api";
+import Table from "components/Table/Table";
+import Button from "components/Button";
+import { get, post } from "services/api";
 
 const LobbyList = ({ className }) => {
   const [lobbies, setLobbies] = useState([]);

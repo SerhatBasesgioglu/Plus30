@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import Button from "../../../components/Button";
-import { post } from "../../../services/api";
+import Button from "components/Button";
+import { post } from "services/api";
 
 const LobbyForm = ({ className }) => {
   const defaultLobby = {
