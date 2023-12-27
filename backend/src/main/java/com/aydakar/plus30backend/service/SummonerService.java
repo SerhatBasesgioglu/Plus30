@@ -5,28 +5,65 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class SummonerService {
     private final LCUConnector connector;
     private final ObjectMapper objectMapper;
 
-    public SummonerService(LCUConnector connector, ObjectMapper objectMapper){
+    public SummonerService(LCUConnector connector, ObjectMapper objectMapper) {
         this.connector = connector;
         this.objectMapper = objectMapper;
         connector.connect();
     }
 
-    public JsonNode currentSummoner(){
+    public JsonNode currentSummoner() {
         try {
             JsonNode result = connector.get("/lol-summoner/v1/current-summoner");
             return result;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return objectMapper.valueToTree(e);
         }
     }
 
-    public JsonNode changeIcon(JsonNode data){
+    public JsonNode changeIcon(JsonNode data) {
         return connector.put("/lol-summoner/v1/current-summoner/icon", data);
+    }
+
+    public JsonNode getProfile() {
+        return connector.get("/lol-summoner/v1/current-summoner/summoner-profile");
+    }
+
+    public JsonNode changeStatusMessage(JsonNode inputs) {
+        String message = """
+                .........:##:::.............................................
+                .......:::::/;;\\:...........................................
+                ()::::::@::/;;#;|:...........................................
+                ::::##::::|;;##;|::..........................................
+                .':::::::::\\;;;/::'.........................................
+                ......':::::::::::...........................................
+                .......|O|O|O|O|O|O..........................................
+                .......:#:::::::##::.........................................
+                .......:###:::::#:::::.......................................
+                ......:::##:::::::::::#:.....................................
+                .......::::;:::::::::###::...................................
+                .......':::;::###::;::#:::::.................................
+                ........::::;::#::;::::::::::................................
+                ........:##:;::::::;::::###:::...............................
+                ......:::::; .:::##::::::::::::::::.........................
+                ......::::::; :::::::::::::::::##::.........................
+                """;
+        ;
+        try {
+            String zmessage = inputs.get("statusMessage").asText();
+        } catch (Exception ignored) {
+        }
+
+        Map<String, String> statusMap = new HashMap<>();
+        statusMap.put("statusMessage", message);
+        System.out.println(message);
+        return connector.put("/lol-chat/v1/me", inputs);
     }
 }

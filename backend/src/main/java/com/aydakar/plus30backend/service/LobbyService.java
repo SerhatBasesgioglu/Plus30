@@ -6,10 +6,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
-import java.util.concurrent.ScheduledFuture;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ScheduledFuture;
 
 @Service
 public class LobbyService {
@@ -25,7 +25,7 @@ public class LobbyService {
         connector.connect();
     }
 
-    public JsonNode allLobbies(){
+    public JsonNode allLobbies() {
         try {
             connector.post("/lol-lobby/v1/custom-games/refresh");
             return connector.get("/lol-lobby/v1/custom-games");
@@ -48,7 +48,7 @@ public class LobbyService {
                 lobbyPasswordJson.asText() : "";
         int mapId = (mapIdJson != null) ?
                 mapIdJson.asInt() : 11;
-        String gameMode = switch(mapId){
+        String gameMode = switch (mapId) {
             case 11 -> "CLASSIC";
             case 12 -> "ARAM";
             default -> "ARAM";
@@ -84,21 +84,23 @@ public class LobbyService {
         return connector.post("/lol-lobby/v2/lobby", rootNode);
     }
 
-    public void startAutoKicker(long rate){
+    public JsonNode delete() {
+        return connector.delete("/lol-lobby/v2/lobby");
+    }
+
+    public void startAutoKicker(long rate) {
         if (scheduledFuture == null || scheduledFuture.isCancelled()) {
             scheduledFuture = taskScheduler.scheduleAtFixedRate(this::autoKicker, rate);
         }
     }
 
-    public void stopAutoKicker(){
+    public void stopAutoKicker() {
         if (scheduledFuture != null) {
             scheduledFuture.cancel(true);
         }
     }
 
-
-
-    private JsonNode autoKicker(){
+    private JsonNode autoKicker() {
         try {
             List<String> memberList = new ArrayList<>();
             List<String> blockedList = new ArrayList<>();
@@ -122,23 +124,34 @@ public class LobbyService {
                     }
                 }
             }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             return objectMapper.valueToTree(e);
         }
         return null;
     }
 
-    public JsonNode joinLobby(JsonNode inputs){
+    public JsonNode joinLobby(JsonNode inputs) {
         JsonNode lobbyIdJson = inputs.get("lobbyId");
         String lobbyId = lobbyIdJson.asText();
         ObjectNode data = objectMapper.createObjectNode();
         //data.put("password", "");
         //data.put("asSpectator", true);
-        return connector.post("/lol-lobby/v1/custom-games/"+lobbyId+"/join",data);
+        return connector.post("/lol-lobby/v1/custom-games/" + lobbyId + "/join", data);
     }
 
-    public JsonNode members(){
+    public JsonNode members() {
         return connector.get("/lol-lobby/v2/lobby/members");
+    }
+
+    public JsonNode addBot(JsonNode inputs) {
+        return connector.post("/lol-lobby/v1/lobby/custom/bots", inputs);
+    }
+
+    public JsonNode availableBots() {
+        return connector.get("/lol-lobby/v2/lobby/custom/available-bots");
+    }
+
+    public JsonNode invite(JsonNode inputs) {
+        return connector.post("/lol-lobby/v2/lobby/invitations", inputs);
     }
 }

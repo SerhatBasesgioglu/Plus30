@@ -1,12 +1,8 @@
 package com.aydakar.plus30backend.controller;
 
 import com.aydakar.plus30backend.service.LobbyService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
-
-
 
 
 @RestController
@@ -14,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 public class LobbyController {
     private final LobbyService lobbyService;
 
-    public LobbyController(LobbyService lobbyService){
+    public LobbyController(LobbyService lobbyService) {
         this.lobbyService = lobbyService;
     }
 
@@ -28,22 +24,43 @@ public class LobbyController {
         return lobbyService.createLobby(inputs);
     }
 
+    @DeleteMapping("")
+    public JsonNode delete() {
+        return lobbyService.delete();
+    }
+
     @GetMapping("/start-kicker")
     public void startAutoKicker() {
         lobbyService.startAutoKicker(1000);
     }
+
     @GetMapping("/stop-kicker")
-    public void stopVoidKicker(){
+    public void stopVoidKicker() {
         lobbyService.stopAutoKicker();
     }
 
     @PostMapping("/join")
-    public JsonNode joinLobby(@RequestBody JsonNode inputs){
+    public JsonNode joinLobby(@RequestBody JsonNode inputs) {
         return lobbyService.joinLobby(inputs);
     }
 
     @GetMapping("/members")
-    public JsonNode members(){
+    public JsonNode members() {
         return lobbyService.members();
+    }
+
+    @PostMapping("/add-bot")
+    public JsonNode addBot(@RequestBody JsonNode inputs) {
+        return lobbyService.addBot(inputs);
+    }
+
+    @GetMapping("/available-bots")
+    public JsonNode availableBots() {
+        return lobbyService.availableBots();
+    }
+
+    @PostMapping("/invite")
+    public JsonNode invite(@RequestBody JsonNode inputs) {
+        return lobbyService.invite(inputs);
     }
 }
