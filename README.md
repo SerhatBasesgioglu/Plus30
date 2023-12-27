@@ -2,6 +2,8 @@
 
 Currently on development!
 
+Official Website: plus30lol.com
+
 Plus30 aims to automate some tasks for the custom game lobbies (Centered around Howling Abyss).
 
 # Current Features
@@ -19,7 +21,7 @@ Plus30 aims to automate some tasks for the custom game lobbies (Centered around 
 - Discord Integration (?)
 - Custom Ban/Pick System For Champion Selection (?)
 
-# TO DO
+# To Do
 
 Backend
 
@@ -67,7 +69,7 @@ You can reach me with following channels, I appreciate the use of Issues page th
 
 # Disclaimer
 
-App is currently on "Pending Review" at Riot Developer Portal which means it is not apporoved by Riot yet, use it at your own risk.
+App is approved by Rioters in developer portal, using it with the current functionalities (27.12.2023) should not cause any problem (slim to none ban risk)
 I am prioritizing the technologies that I am learning (Spring Boot, Electron, ReactJs) instead of focusing on performance, RAM usage and storage of the project will be relatively high.
 
 Plus30 isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
