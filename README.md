@@ -2,7 +2,7 @@
 
 Currently on development!
 
-Official Website: plus30lol.com
+Official Website: https://plus30lol.com (empty yet)
 
 Plus30 aims to automate some tasks for the custom game lobbies (Centered around Howling Abyss).
 
@@ -36,7 +36,6 @@ Frontend
 - Add current lobby data
 - Import frontend into an electron instance
 - Implement websocket client
-- Centralize api requests (facade pattern?)
 - Add pop ups for better user experience (Lobby created, lobby is full, etc.)
 - Implement auto-kick toggle, add options (only blocked players, import from local or online list, etc.)
 
