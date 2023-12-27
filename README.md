@@ -68,7 +68,8 @@ You can reach me with following channels, I appreciate the use of Issues page th
 
 # Disclaimer
 
-App is approved by Rioters in developer portal, using it with the current functionalities (27.12.2023) should not cause any problem (slim to none ban risk)
+App is approved by Rioters in developer portal, using it with the current functionalities (27.12.2023) should not cause any problem (slim to none ban risk).
+
 I am prioritizing the technologies that I am learning (Spring Boot, Electron, ReactJs) instead of focusing on performance, RAM usage and storage of the project will be relatively high.
 
 Plus30 isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
