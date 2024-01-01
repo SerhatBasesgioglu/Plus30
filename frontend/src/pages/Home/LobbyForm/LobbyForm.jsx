@@ -21,7 +21,7 @@ const LobbyForm = ({ className }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await post("/lobby/create", inputs);
+    await post("/lobby", inputs);
   };
 
   const handleChange = (event) => {

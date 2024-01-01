@@ -50,7 +50,7 @@ public class LobbyService {
         return null;
     }
 
-    public JsonNode createLobby(JsonNode inputs) {
+    public JsonNode create(JsonNode inputs) {
         JsonNode lobbyNameJson = inputs.get("lobbyName");
         JsonNode lobbyPasswordJson = inputs.get("lobbyPassword");
         JsonNode mapIdJson = inputs.get("mapId");

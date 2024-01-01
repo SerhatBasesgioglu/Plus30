@@ -23,9 +23,9 @@ public class LobbyController {
         return lobbyService.getCustomGames();
     }
 
-    @PostMapping("/create")
-    public JsonNode createLobby(@RequestBody JsonNode inputs) {
-        return lobbyService.createLobby(inputs);
+    @PostMapping("")
+    public JsonNode create(@RequestBody JsonNode inputs) {
+        return lobbyService.create(inputs);
     }
 
     @DeleteMapping("")
