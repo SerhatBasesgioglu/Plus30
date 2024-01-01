@@ -1,8 +1,12 @@
 package com.aydakar.plus30backend.controller;
 
+import com.aydakar.plus30backend.dto.CustomGameDTO;
+import com.aydakar.plus30backend.entity.Summoner;
 import com.aydakar.plus30backend.service.LobbyService;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -14,9 +18,9 @@ public class LobbyController {
         this.lobbyService = lobbyService;
     }
 
-    @GetMapping("/all-lobbies")
-    public JsonNode allLobbies() {
-        return lobbyService.allLobbies();
+    @GetMapping("/custom-games")
+    public List<CustomGameDTO> getCustomGames() {
+        return lobbyService.getCustomGames();
     }
 
     @PostMapping("/create")
@@ -27,6 +31,11 @@ public class LobbyController {
     @DeleteMapping("")
     public JsonNode delete() {
         return lobbyService.delete();
+    }
+
+    @GetMapping("")
+    public JsonNode get() {
+        return lobbyService.get();
     }
 
     @GetMapping("/start-kicker")
@@ -45,7 +54,7 @@ public class LobbyController {
     }
 
     @GetMapping("/members")
-    public JsonNode members() {
+    public List<Summoner> members() {
         return lobbyService.members();
     }
 

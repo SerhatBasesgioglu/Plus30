@@ -1,9 +1,15 @@
 package com.aydakar.plus30backend.service;
 
+import com.aydakar.plus30backend.dto.CustomGameDTO;
+import com.aydakar.plus30backend.entity.CustomGame;
+import com.aydakar.plus30backend.entity.Summoner;
 import com.aydakar.plus30backend.util.LCUConnector;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 
@@ -15,24 +21,33 @@ import java.util.concurrent.ScheduledFuture;
 public class LobbyService {
     private final LCUConnector connector;
     private final ObjectMapper objectMapper;
+    private final ModelMapper modelMapper;
     private final TaskScheduler taskScheduler;
     private ScheduledFuture<?> scheduledFuture;
 
-    public LobbyService(LCUConnector connector, ObjectMapper objectMapper, TaskScheduler taskScheduler) {
+    public LobbyService(LCUConnector connector, ObjectMapper objectMapper,
+                        ModelMapper modelMapper, TaskScheduler taskScheduler) {
         this.connector = connector;
         this.objectMapper = objectMapper;
+        this.modelMapper = modelMapper;
         this.taskScheduler = taskScheduler;
         connector.connect();
     }
 
-    public JsonNode allLobbies() {
+    public List<CustomGameDTO> getCustomGames() {
         try {
             connector.post("/lol-lobby/v1/custom-games/refresh");
-            return connector.get("/lol-lobby/v1/custom-games");
-
+            JsonNode customGameJson = connector.get("/lol-lobby/v1/custom-games");
+            List<CustomGame> customGame = objectMapper.convertValue(customGameJson,
+                    new TypeReference<List<CustomGame>>() {
+                    });
+            List<CustomGameDTO> customGameDTO = modelMapper.map(customGame,
+                    new TypeToken<List<CustomGameDTO>>() {
+                    }.getType());
+            return customGameDTO;
         } catch (Exception e) {
-            return objectMapper.valueToTree(e);
         }
+        return null;
     }
 
     public JsonNode createLobby(JsonNode inputs) {
@@ -88,6 +103,15 @@ public class LobbyService {
         return connector.delete("/lol-lobby/v2/lobby");
     }
 
+    public JsonNode get() {
+        try {
+            JsonNode lobbyJson = connector.get("/lol-lobby/v2/lobby");
+            return lobbyJson;
+        } catch (Exception ignored) {
+        }
+        return null;
+    }
+
     public void startAutoKicker(long rate) {
         if (scheduledFuture == null || scheduledFuture.isCancelled()) {
             scheduledFuture = taskScheduler.scheduleAtFixedRate(this::autoKicker, rate);
@@ -139,8 +163,24 @@ public class LobbyService {
         return connector.post("/lol-lobby/v1/custom-games/" + lobbyId + "/join", data);
     }
 
-    public JsonNode members() {
-        return connector.get("/lol-lobby/v2/lobby/members");
+    public List<Summoner> members() {
+        JsonNode lobbyMembersJson = connector.get("/lol-lobby/v2/lobby/members");
+        List<Summoner> memberList = new ArrayList<>();
+
+        try {
+            if (lobbyMembersJson.isArray()) {
+                for (JsonNode node : lobbyMembersJson) {
+                    String puuid = node.get("puuid").asText();
+                    String endpoint = "/lol-summoner/v2/summoners/puuid/" + puuid;
+                    JsonNode summonerJson = connector.get(endpoint);
+                    Summoner summoner = objectMapper.treeToValue(summonerJson, Summoner.class);
+                    memberList.add(summoner);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return memberList;
     }
 
     public JsonNode addBot(JsonNode inputs) {

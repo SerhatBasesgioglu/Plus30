@@ -12,7 +12,7 @@ const LobbyList = ({ className }) => {
   });
 
   const lobbyData = async () => {
-    let data = await get("/lobby/all-lobbies");
+    let data = await get("/lobby/custom-games");
     data.sort((a, b) => {
       if (a.lobbyName < b.lobbyName) {
         return -1;
