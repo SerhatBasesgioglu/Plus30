@@ -1,7 +1,6 @@
 package com.aydakar.plus30backend.service;
 
 import com.aydakar.plus30backend.dao.SummonerDAO;
-import com.aydakar.plus30backend.dto.CustomGameDTO;
 import com.aydakar.plus30backend.entity.Bot;
 import com.aydakar.plus30backend.entity.CustomGame;
 import com.aydakar.plus30backend.entity.Summoner;
@@ -11,7 +10,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 
@@ -39,17 +37,15 @@ public class LobbyService {
         connector.connect();
     }
 
-    public List<CustomGameDTO> getCustomGames() {
+    public List<CustomGame> getCustomGames() {
         try {
             connector.post("/lol-lobby/v1/custom-games/refresh");
             JsonNode customGameJson = connector.get("/lol-lobby/v1/custom-games");
             List<CustomGame> customGame = objectMapper.convertValue(customGameJson,
                     new TypeReference<List<CustomGame>>() {
                     });
-            List<CustomGameDTO> customGameDTO = modelMapper.map(customGame,
-                    new TypeToken<List<CustomGameDTO>>() {
-                    }.getType());
-            return customGameDTO;
+
+            return customGame;
         } catch (Exception e) {
         }
         return null;
