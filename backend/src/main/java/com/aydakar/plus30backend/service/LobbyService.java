@@ -153,18 +153,6 @@ public class LobbyService {
                     }
                 }
             }
-            for (JsonNode element : blockedJson) {
-                String temp = objectMapper.treeToValue(element.get("summonerId"), String.class);
-                blockedList.add(temp);
-            }
-            for (String a : memberList) {
-                for (String b : blockedList) {
-                    if (a.equals(b)) {
-                        String url = "lol-lobby/v2/lobby/members/" + a + "/kick";
-                        return connector.post(url);
-                    }
-                }
-            }
         } catch (Exception e) {
             return objectMapper.valueToTree(e);
         }
