@@ -46,4 +46,8 @@ public class SummonerService {
     public List<Summoner> getBlockedSummoners() {
         return summonerDAO.findAll();
     }
+
+    public void addSummonerToBlockList(Summoner summoner) {
+        summonerDAO.save(summoner);
+    }
 }

@@ -19,4 +19,5 @@ public class Summoner {
     String puuid;
     String gameName;
     String tagLine;
+    boolean isLeader;
 }

@@ -4,6 +4,7 @@ import com.aydakar.plus30backend.entity.Summoner;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,9 +22,8 @@ public class SummonerDAO {
         return summoners;
     }
 
+    @Transactional
     public void save(Summoner summoner) {
         entityManager.persist(summoner);
     }
-
-
 }

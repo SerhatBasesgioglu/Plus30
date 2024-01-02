@@ -1,5 +1,6 @@
 package com.aydakar.plus30backend.service;
 
+import com.aydakar.plus30backend.dao.SummonerDAO;
 import com.aydakar.plus30backend.dto.CustomGameDTO;
 import com.aydakar.plus30backend.entity.Bot;
 import com.aydakar.plus30backend.entity.CustomGame;
@@ -15,6 +16,7 @@ import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 
@@ -24,14 +26,16 @@ public class LobbyService {
     private final ObjectMapper objectMapper;
     private final ModelMapper modelMapper;
     private final TaskScheduler taskScheduler;
+    private final SummonerDAO summonerDAO;
     private ScheduledFuture<?> scheduledFuture;
 
     public LobbyService(LCUConnector connector, ObjectMapper objectMapper,
-                        ModelMapper modelMapper, TaskScheduler taskScheduler) {
+                        ModelMapper modelMapper, TaskScheduler taskScheduler, SummonerDAO summonerDAO) {
         this.connector = connector;
         this.objectMapper = objectMapper;
         this.modelMapper = modelMapper;
         this.taskScheduler = taskScheduler;
+        this.summonerDAO = summonerDAO;
         connector.connect();
     }
 
@@ -132,10 +136,26 @@ public class LobbyService {
 
             JsonNode membersJson = connector.get("/lol-lobby/v2/lobby").get("members");
             JsonNode blockedJson = connector.get("/lol-chat/v1/blocked-players");
+            JsonNode currentSummonerJson = connector.get("/lol-summoner/v1/current-summoner");
 
-            for (JsonNode element : membersJson) {
-                String temp = objectMapper.treeToValue(element.get("summonerId"), String.class);
-                memberList.add(temp);
+            List<Summoner> members = Arrays.asList(objectMapper.treeToValue(membersJson, Summoner[].class));
+            List<Summoner> blocked = Arrays.asList(objectMapper.treeToValue(blockedJson, Summoner[].class));
+            Summoner currentSummoner = objectMapper.treeToValue(currentSummonerJson, Summoner.class);
+            List<Summoner> blackList = summonerDAO.findAll();
+
+            List<Summoner> kickList = new ArrayList<>(blocked);
+            kickList.addAll(blackList);
+
+            for (Summoner member : members) {
+                for (Summoner kick : kickList) {
+                    String memberId = member.getSummonerId();
+                    String kickId = kick.getSummonerId();
+                    String currentSummonerId = currentSummoner.getSummonerId();
+                    if (memberId.equals(kickId) && !kickId.equals(currentSummonerId)) {
+                        String url = "lol-lobby/v2/lobby/members/" + kick.getSummonerId() + "/kick";
+                        return connector.post(url);
+                    }
+                }
             }
             for (JsonNode element : blockedJson) {
                 String temp = objectMapper.treeToValue(element.get("summonerId"), String.class);
@@ -175,6 +195,7 @@ public class LobbyService {
                     String endpoint = "/lol-summoner/v2/summoners/puuid/" + puuid;
                     JsonNode summonerJson = connector.get(endpoint);
                     Summoner summoner = objectMapper.treeToValue(summonerJson, Summoner.class);
+                    summonerDAO.save(summoner);
                     memberList.add(summoner);
                 }
             }
