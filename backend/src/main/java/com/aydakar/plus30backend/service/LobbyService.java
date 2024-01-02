@@ -1,6 +1,7 @@
 package com.aydakar.plus30backend.service;
 
 import com.aydakar.plus30backend.dto.CustomGameDTO;
+import com.aydakar.plus30backend.entity.Bot;
 import com.aydakar.plus30backend.entity.CustomGame;
 import com.aydakar.plus30backend.entity.Summoner;
 import com.aydakar.plus30backend.util.LCUConnector;
@@ -183,8 +184,9 @@ public class LobbyService {
         return memberList;
     }
 
-    public JsonNode addBot(JsonNode inputs) {
-        return connector.post("/lol-lobby/v1/lobby/custom/bots", inputs);
+    public JsonNode addBot(Bot bot) {
+        JsonNode botDTOJson = objectMapper.valueToTree(bot);
+        return connector.post("/lol-lobby/v1/lobby/custom/bots", botDTOJson);
     }
 
     public JsonNode availableBots() {

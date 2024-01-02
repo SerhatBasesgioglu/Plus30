@@ -56,14 +56,8 @@ public class LCUConnector {
     }
 
     private void disconnect() {
-        //May not be necessary, after the implementation change into public.
     }
 
-    /*
-    get,post,put,delete requests for the LCU api, normally it uses non-blocking logic, but
-    I am converting it to blocking with .block(), later on can be changed to non-block for
-    better performance.
-     */
 
     public JsonNode get(String endPoint) {
         return execute("get", endPoint, null);

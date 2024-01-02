@@ -1,6 +1,7 @@
 package com.aydakar.plus30backend.controller;
 
 import com.aydakar.plus30backend.dto.CustomGameDTO;
+import com.aydakar.plus30backend.entity.Bot;
 import com.aydakar.plus30backend.entity.Summoner;
 import com.aydakar.plus30backend.service.LobbyService;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -58,8 +59,8 @@ public class LobbyController {
         return lobbyService.members();
     }
 
-    @PostMapping("/add-bot")
-    public JsonNode addBot(@RequestBody JsonNode inputs) {
+    @PostMapping("/bot")
+    public JsonNode addBot(@RequestBody Bot inputs) {
         return lobbyService.addBot(inputs);
     }
 
