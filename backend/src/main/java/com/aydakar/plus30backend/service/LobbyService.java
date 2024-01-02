@@ -127,22 +127,24 @@ public class LobbyService {
 
     private JsonNode autoKicker() {
         try {
-            List<String> memberList = new ArrayList<>();
-            List<String> blockedList = new ArrayList<>();
-
-            JsonNode membersJson = connector.get("/lol-lobby/v2/lobby").get("members");
+            JsonNode lobby = connector.get("/lol-lobby/v2/lobby");
+            JsonNode membersJson = lobby.get("members");
+            JsonNode spectatorsJson = lobby.get("gameConfig").get("customSpectators");
             JsonNode blockedJson = connector.get("/lol-chat/v1/blocked-players");
             JsonNode currentSummonerJson = connector.get("/lol-summoner/v1/current-summoner");
 
             List<Summoner> members = Arrays.asList(objectMapper.treeToValue(membersJson, Summoner[].class));
+            List<Summoner> spectators = Arrays.asList(objectMapper.treeToValue(spectatorsJson, Summoner[].class));
             List<Summoner> blocked = Arrays.asList(objectMapper.treeToValue(blockedJson, Summoner[].class));
             Summoner currentSummoner = objectMapper.treeToValue(currentSummonerJson, Summoner.class);
             List<Summoner> blackList = summonerDAO.findAll();
 
             List<Summoner> kickList = new ArrayList<>(blocked);
+            List<Summoner> lobbyList = new ArrayList<>(members);
+            lobbyList.addAll(spectators);
             kickList.addAll(blackList);
 
-            for (Summoner member : members) {
+            for (Summoner member : lobbyList) {
                 for (Summoner kick : kickList) {
                     String memberId = member.getSummonerId();
                     String kickId = kick.getSummonerId();
@@ -179,7 +181,7 @@ public class LobbyService {
                     String endpoint = "/lol-summoner/v2/summoners/puuid/" + puuid;
                     JsonNode summonerJson = connector.get(endpoint);
                     Summoner summoner = objectMapper.treeToValue(summonerJson, Summoner.class);
-                    summonerDAO.save(summoner);
+                    //summonerDAO.save(summoner);
                     memberList.add(summoner);
                 }
             }
