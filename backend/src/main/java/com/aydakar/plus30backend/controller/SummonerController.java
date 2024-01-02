@@ -1,8 +1,11 @@
 package com.aydakar.plus30backend.controller;
 
+import com.aydakar.plus30backend.entity.Summoner;
 import com.aydakar.plus30backend.service.SummonerService;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/summoner")
@@ -31,6 +34,11 @@ public class SummonerController {
     @PutMapping("status-message")
     public JsonNode changeStatusMessage(@RequestBody JsonNode inputs) {
         return summonerService.changeStatusMessage(inputs);
+    }
+
+    @GetMapping("block-list")
+    public List<Summoner> getBlockedSummoners() {
+        return summonerService.getBlockedSummoners();
     }
 
 }
