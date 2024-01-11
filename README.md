@@ -2,7 +2,7 @@
 
 Currently on development!
 
-Official Website: https://plus30lol.com (empty yet)
+Official Website: https://plus30.lol (empty yet)
 
 Plus30 aims to automate some tasks for the custom game lobbies (Centered around Howling Abyss).
 
