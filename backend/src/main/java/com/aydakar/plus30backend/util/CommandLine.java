@@ -66,7 +66,7 @@ public class CommandLine {
     }
 
     public static void resetClientUx(){
-        String command = "taskkill /IM \"LeagueClientUx.exe\" /F";
+        String command = "taskkill /IM \"LeagueClientUxRender.exe\" /F";
         try{
             ProcessBuilder processBuilder = new ProcessBuilder(command.split("\\s+"));
             Process process = processBuilder.start();
