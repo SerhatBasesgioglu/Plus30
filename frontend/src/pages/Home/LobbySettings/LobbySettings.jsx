@@ -1,7 +1,35 @@
+import { useState } from "react";
+import Button from "components/Button";
+import { get } from "services/api";
+
 const LobbySettings = () => {
+  const [kickBlocked, setKickBlocked] = useState(true);
+  const [kickBlackList, setKickBlackList] = useState(true);
+
+  const handleBlockedToggle = () => {
+    setKickBlocked(!kickBlocked);
+    if (kickBlocked) {
+      get("/lobby/start-kicker");
+    } else {
+      get("/lobby/stop-kicker");
+    }
+    console.log(kickBlocked);
+  };
+  const handleBlackListToggle = () => {
+    setKickBlackList(!kickBlackList);
+  };
   return (
-    <div>
-      <p>This is the lobbysettings implementation</p>
+    <div className="mt-4">
+      <Button
+        className={!kickBlocked ? "bg-green-400" : "bg-red-400"}
+        text="Kick Blocked"
+        onClick={handleBlockedToggle}
+      />
+      <Button
+        className={!kickBlackList ? "bg-green-400" : "bg-red-400"}
+        text="Kick Blacklisted"
+        onClick={handleBlackListToggle}
+      />
     </div>
   );
 };
