@@ -1,5 +1,5 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
-import "./LobbyList.css";
 import Table from "components/Table/Table";
 import Button from "components/Button";
 import { get, post } from "services/api";
@@ -32,12 +32,21 @@ const LobbyList = ({ className }) => {
 
   const applyFilters = (lobby) => {
     if (filters.hidePasswordProtected && lobby.hasPassword) return false;
-    if (
-      (filters.hideDefault && lobby.lobbyName.includes("oyunu")) ||
-      lobby.lobbyName.includes("game")
-    )
-      return false;
+    if ((filters.hideDefault && lobby.lobbyName.includes("oyunu")) || lobby.lobbyName.includes("Game")) return false;
     return true;
+  };
+
+  const [isDefaultChecked, setIsDefaultChecked] = useState(true);
+  const [isPasswordChecked, setIsPasswordChecked] = useState(true);
+
+  const handleDefaultToggle = () => {
+    setIsDefaultChecked(!isDefaultChecked);
+    setFilters({ ...filters, hideDefault: isDefaultChecked });
+  };
+
+  const handlePasswordToggle = () => {
+    setIsPasswordChecked(!isPasswordChecked);
+    setFilters({ ...filters, hidePasswordProtected: isPasswordChecked });
   };
 
   const columns = [
@@ -54,8 +63,7 @@ const LobbyList = ({ className }) => {
     },
     {
       header: "Map",
-      accessor: (row) =>
-        row.gameType === "ARAM" ? "Howling Abyss" : "Summoners Rift",
+      accessor: (row) => (row.gameType === "ARAM" ? "Howling Abyss" : "Summoners Rift"),
       widthRatio: 15,
     },
     {
@@ -72,41 +80,23 @@ const LobbyList = ({ className }) => {
 
   return (
     <div className={className}>
-      <div className="row my-1">
-        <Button
-          className="btn btn-info  col-3"
-          type="button"
-          onClick={lobbyData}
-          text="Refresh Lobbies"
-        />
+      <div className="">
+        <Button className="bg-yellow-500" onClick={lobbyData} text="Refresh" />
 
-        <div className="form-group col-4">
-          <label>Hide password lobbies</label>
-          <input
-            type="checkbox"
-            checked={filters.hidePasswordProtected}
-            onChange={(e) =>
-              setFilters({
-                ...filters,
-                hidePasswordProtected: e.target.checked,
-              })
-            }
-          />
-        </div>
-        <div className="form-group col-4">
-          <label>Hide default lobbies</label>
-          <input
-            type="checkbox"
-            checked={filters.hideDefault}
-            onChange={(e) => {
-              setFilters({ ...filters, hideDefault: e.target.checked });
-            }}
-          />
-        </div>
+        <Button
+          text="Default Lobbies"
+          className={isDefaultChecked ? "bg-green-400" : "bg-red-400"}
+          onClick={handleDefaultToggle}
+        />
+        <Button
+          text="Pass Lobbies"
+          className={isPasswordChecked ? "bg-green-400" : "bg-red-400"}
+          onClick={handlePasswordToggle}
+        />
       </div>
 
       <Table
-        className="table table-sm table-info table-hover"
+        className=""
         columns={columns}
         data={lobbies}
         filters={applyFilters}

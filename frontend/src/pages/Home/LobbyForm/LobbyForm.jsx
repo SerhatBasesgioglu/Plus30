@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import Button from "components/Button";
 import { post } from "services/api";
@@ -13,11 +14,7 @@ const LobbyForm = ({ className }) => {
 
   const [inputs, setInputs] = useState(defaultLobby);
   const [presetIndex, setPresetIndex] = useState(0);
-  const [presets, setPresets] = useState([
-    defaultLobby,
-    defaultLobby,
-    defaultLobby,
-  ]);
+  const [presets, setPresets] = useState([defaultLobby, defaultLobby, defaultLobby]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -53,44 +50,39 @@ const LobbyForm = ({ className }) => {
   }, []);
 
   return (
-    <div className={className}>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Lobby Name</label>
+    <div className="p-2 flex flex-col justify-center items-center">
+      <form className="" onSubmit={handleSubmit}>
+        <div className="">
+          <label className="block font-medium">Lobby Name</label>
           <input
-            className="form-control"
+            className="border border-gray-400 w-40"
             type="text"
             name="lobbyName"
             value={inputs.lobbyName}
             onChange={handleChange}
           />
         </div>
-        <div className="form-group">
-          <label>Password</label>
+        <div className="">
+          <label className="block font-medium">Password</label>
           <input
-            className="form-control"
+            className="border border-gray-400 w-40"
             type="text"
             name="lobbyPassword"
             value={inputs.lobbyPassword}
             onChange={handleChange}
           />
         </div>
-        <div className="form-group">
-          <label>Game Type</label>
-          <select
-            className="form-control"
-            name="mapId"
-            value={inputs.mapId}
-            onChange={handleChange}
-          >
+        <div className="">
+          <label className="block font-medium">Game Type</label>
+          <select className="border border-gray-400 w-40" name="mapId" value={inputs.mapId} onChange={handleChange}>
             <option value={12}>Howling Abyss</option>
             <option value={11}>Summoners Rift</option>
           </select>
         </div>
-        <div className="form-group">
-          <label>Team Size</label>
+        <div className="">
+          <label className="block font-medium">Team Size</label>
           <select
-            className="form-control"
+            className="border border-gray-400 w-40"
             name="teamSize"
             value={inputs.teamSize}
             onChange={handleChange}
@@ -102,10 +94,10 @@ const LobbyForm = ({ className }) => {
             <option value={5}>5</option>
           </select>
         </div>
-        <div className="form-group">
-          <label>Spectator</label>
+        <div className="">
+          <label className="block font-medium">Spectator</label>
           <select
-            className="form-control"
+            className="border border-gray-400 w-40"
             name="spectatorPolicy"
             value={inputs.spectatorPolicy}
             onChange={handleChange}
@@ -115,62 +107,22 @@ const LobbyForm = ({ className }) => {
             <option value="FriendsAllowed">Friends</option>
             <option value="NotAllowed">Not</option>
           </select>
-          <div className="my-2">
-            <Button
-              text="Submit"
-              type="submit"
-              className="btn btn-secondary"
-            ></Button>
-
-            <Button
-              text="Save"
-              type="button"
-              className="btn btn-info mx-2"
-              onClick={handleSave}
-            />
-
-            <Button
-              text="Load"
-              type="button"
-              className="btn btn-info mx-2"
-              onClick={handleLoad}
-            />
-
-            <Button
-              text="Clear"
-              type="button"
-              className="btn btn-info mx-2"
-              onClick={handleClear}
-            />
+          <div className="my-1">
+            <Button text="Submit" type="submit" className=""></Button>
+            <Button text="Save" type="button" className="" onClick={handleSave} />
+            <Button text="Load" type="button" className="" onClick={handleLoad} />
+            <Button text="Clear" type="button" className="" onClick={handleClear} />
           </div>
         </div>
       </form>
       <div>
-        <p className="mt-4">Presets</p>
+        <p className="mt-2">Presets</p>
 
-        <Button
-          className={`btn btn-info mx-2 ${
-            presetIndex === 0 ? "bg-primary" : "bg-secondary"
-          }`}
-          onClick={() => setPresetIndex(0)}
-          text="1"
-        />
+        <Button className={`${presetIndex === 0 ? "bg-blue-800" : ""}`} onClick={() => setPresetIndex(0)} text="1" />
 
-        <Button
-          className={`btn btn-info mx-2 ${
-            presetIndex === 1 ? "bg-primary" : "bg-secondary"
-          }`}
-          onClick={() => setPresetIndex(1)}
-          text="2"
-        />
+        <Button className={`${presetIndex === 1 ? "bg-blue-800" : ""}`} onClick={() => setPresetIndex(1)} text="2" />
 
-        <Button
-          className={`btn btn-info mx-2 ${
-            presetIndex === 2 ? "bg-primary" : "bg-secondary"
-          }`}
-          onClick={() => setPresetIndex(2)}
-          text="3"
-        />
+        <Button className={`${presetIndex === 2 ? "bg-blue-800" : ""}`} onClick={() => setPresetIndex(2)} text="3" />
       </div>
     </div>
   );

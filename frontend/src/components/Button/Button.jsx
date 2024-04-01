@@ -1,6 +1,8 @@
-const Button = ({ text, type, className, onClick }) => {
+/* eslint-disable react/prop-types */
+const Button = ({ text, className, type, onClick }) => {
+  const defaultClasses = "bg-blue-600 p-1 mr-1 my-1 min-w-8 h-6 text-xs rounded-md "; //Leave a blank at the end!!
   return (
-    <button type={type} className={className} onClick={onClick}>
+    <button className={defaultClasses + className} type={type} onClick={onClick}>
       {text}
     </button>
   );

@@ -1,9 +1,6 @@
-import "./Table.css";
+/* eslint-disable react/prop-types */
 const Table = ({ columns, data, className, filters, handleRowDoubleClick }) => {
-  const totalRatio = columns.reduce(
-    (acc, column) => acc + column.widthRatio,
-    0
-  );
+  const totalRatio = columns.reduce((acc, column) => acc + column.widthRatio, 0);
 
   return (
     <div className="table-container">
@@ -11,10 +8,7 @@ const Table = ({ columns, data, className, filters, handleRowDoubleClick }) => {
         <thead>
           <tr>
             {columns.map((column, columnIndex) => (
-              <th
-                key={columnIndex}
-                style={{ width: `${(column.widthRatio / totalRatio) * 100}%` }}
-              >
+              <th key={columnIndex} style={{ width: `${(column.widthRatio / totalRatio) * 100}%` }}>
                 {column.header}{" "}
               </th>
             ))}
@@ -23,15 +17,10 @@ const Table = ({ columns, data, className, filters, handleRowDoubleClick }) => {
         <tbody>
           {data &&
             data.filter(filters).map((row, rowIndex) => (
-              <tr
-                key={rowIndex}
-                onDoubleClick={() => handleRowDoubleClick(row)}
-              >
+              <tr key={rowIndex} onDoubleClick={() => handleRowDoubleClick(row)}>
                 {columns.map((column, columnIndex) => (
                   <td key={columnIndex}>
-                    {typeof column.accessor === "function"
-                      ? column.accessor(row)
-                      : row[column.accessor]}
+                    {typeof column.accessor === "function" ? column.accessor(row) : row[column.accessor]}
                   </td>
                 ))}
               </tr>

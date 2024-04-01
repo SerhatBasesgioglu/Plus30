@@ -1,20 +1,28 @@
-import Header from "./Header";
+/* eslint-disable react/prop-types */
 import LobbyForm from "./LobbyForm";
 import LobbyList from "./LobbyList";
-import Lobby from "./Lobby";
+import LobbySettings from "./LobbySettings";
+
+import { useState } from "react";
+import Button from "components/Button";
+const style = "text-xs bg-zinc-600";
 
 const Home = () => {
+  const [activeTab, setActiveTab] = useState(1);
+
+  const handleTabClick = (tabNum) => {
+    setActiveTab(tabNum);
+  };
   return (
-    <div className="App container bg-success bg-opacity-75">
-      <Header />
-      <div className="row">
-        <LobbyForm className="col-3" />
-        <div className="col-3" />
-        <LobbyList className="col-6" />
+    <div className={style}>
+      <div className="flex justify-center">
+        <Button text="Create Lobby" onClick={() => handleTabClick(1)} />
+        <Button text="Lobby List" onClick={() => handleTabClick(2)} />
+        <Button text="Lobby Settings" onClick={() => handleTabClick(3)} />
       </div>
-      <div className="row">
-        <Lobby className="col-6" />
-      </div>
+      {activeTab === 1 && <LobbyForm />}
+      {activeTab === 2 && <LobbyList />}
+      {activeTab === 3 && <LobbySettings />}
     </div>
   );
 };
