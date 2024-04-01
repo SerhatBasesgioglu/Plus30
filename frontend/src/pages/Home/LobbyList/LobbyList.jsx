@@ -51,30 +51,30 @@ const LobbyList = ({ className }) => {
 
   const columns = [
     {
-      header: "Key",
+      header: "🔒",
       accessor: (row) => (row.hasPassword ? "🔒" : ""),
-      widthRatio: 3,
+      widthRatio: 2,
     },
     { header: "Lobby Name", accessor: (row) => row.lobbyName, widthRatio: 15 },
     {
       header: "Owner",
       accessor: (row) => row.ownerDisplayName,
-      widthRatio: 10,
+      widthRatio: 15,
     },
     {
       header: "Map",
       accessor: (row) => (row.gameType === "ARAM" ? "Howling Abyss" : "Summoners Rift"),
-      widthRatio: 15,
+      widthRatio: 10,
     },
     {
       header: "Player",
       accessor: (row) => `${row.filledPlayerSlots}/${row.maxPlayerSlots}`,
-      widthRatio: 5,
+      widthRatio: 3,
     },
     {
       header: "Spectator",
       accessor: (row) => `${row.filledSpectatorSlots}/${row.maxSpectatorSlots}`,
-      widthRatio: 5,
+      widthRatio: 3,
     },
   ];
 
@@ -96,7 +96,7 @@ const LobbyList = ({ className }) => {
       </div>
 
       <Table
-        className=""
+        className="text-2xs"
         columns={columns}
         data={lobbies}
         filters={applyFilters}

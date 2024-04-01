@@ -4,11 +4,15 @@ const Table = ({ columns, data, className, filters, handleRowDoubleClick }) => {
 
   return (
     <div className="table-container">
-      <table className={className}>
+      <table className={`table-auto w-full ${className}`}>
         <thead>
           <tr>
             {columns.map((column, columnIndex) => (
-              <th key={columnIndex} style={{ width: `${(column.widthRatio / totalRatio) * 100}%` }}>
+              <th
+                className="text-left"
+                key={columnIndex}
+                style={{ width: `${(column.widthRatio / totalRatio) * 100}%` }}
+              >
                 {column.header}{" "}
               </th>
             ))}
@@ -19,7 +23,7 @@ const Table = ({ columns, data, className, filters, handleRowDoubleClick }) => {
             data.filter(filters).map((row, rowIndex) => (
               <tr key={rowIndex} onDoubleClick={() => handleRowDoubleClick(row)}>
                 {columns.map((column, columnIndex) => (
-                  <td key={columnIndex}>
+                  <td className="" key={columnIndex}>
                     {typeof column.accessor === "function" ? column.accessor(row) : row[column.accessor]}
                   </td>
                 ))}

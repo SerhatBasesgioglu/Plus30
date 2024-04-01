@@ -5,7 +5,7 @@ import LobbySettings from "./LobbySettings";
 
 import { useState } from "react";
 import Button from "components/Button";
-const style = "text-xs bg-zinc-600";
+const style = "text-2xs bg-zinc-600";
 
 const Home = () => {
   const [activeTab, setActiveTab] = useState(1);

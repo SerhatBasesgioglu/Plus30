@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Button from "components/Button";
 import { post } from "services/api";
 
-const LobbyForm = ({ className }) => {
+const LobbyForm = () => {
   const defaultLobby = {
     lobbyName: "",
     lobbyPassword: "",
