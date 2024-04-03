@@ -41,3 +41,17 @@ jobs:
           cd electron
           npm install
           npm run dist
+
+      - name: Source code zipping
+        run: zip -r source_code.zip
+
+      - name: Deployment
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
+          files: |
+            electron/dist/electron Setup 1.0.0.exe
+            source_code.zip
