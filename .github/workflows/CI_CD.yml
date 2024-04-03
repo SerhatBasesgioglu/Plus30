@@ -1,0 +1,36 @@
+name: CI_CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: "11"
+
+      - name: Build Backend
+        run: |
+          cd backend
+          .\mvnw clean package
+
+      - name: Copy Backend JAR to Electron
+        run: cp backend/target/*.jar electron/resources/
+
+      - name: Build Frontend
+        run: |
+          cd frontend
+          npm install
+          npm run build
+
+      - name: Copy frontend dist to Electron
+        run: cp frontend/dist electron/resources/
