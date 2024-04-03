@@ -39,4 +39,5 @@ jobs:
       - name: Build Electron app
         run: |
           cd electron
+          npm install
           npm run dist
