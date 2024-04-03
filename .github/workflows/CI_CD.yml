@@ -43,7 +43,7 @@ jobs:
           npm run dist
 
       - name: Source code zipping
-        run: zip -r source_code.zip
+        run: zip -r source_code.zip .
 
       - name: Deployment
         uses: "marvinpinto/action-automatic-releases@latest"
