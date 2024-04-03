@@ -5,7 +5,7 @@ import Test from "pages/Test";
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" exact element={<Home />} />
       <Route path="/test" element={<Test />} />
     </Routes>
   );

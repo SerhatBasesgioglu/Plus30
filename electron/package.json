@@ -1,0 +1,28 @@
+{
+  "name": "electron",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "type": "module",
+  "build": {
+    "asarUnpack": [
+      "resources/Plus30Server.jar"
+    ]
+  },
+  "scripts": {
+    "start": "set APP_DEV=true && electron .",
+    "dist": "electron-builder"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^29.1.6",
+    "electron-builder": "^24.13.3"
+  },
+  "dependencies": {
+    "electron-is-dev": "^3.0.1",
+    "ps-node": "^0.1.6",
+    "pstree": "^0.1.0",
+    "tree-kill": "^1.2.2"
+  }
+}

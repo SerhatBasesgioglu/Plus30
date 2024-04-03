@@ -76,6 +76,7 @@
     </dependencies>
 
     <build>
+        <finalName>Plus30Server</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
