@@ -50,4 +50,4 @@ jobs:
           prerelease: false
           title: "Development Build"
           files: |
-            electron/dist/electron Setup 1.0.0.exe
+            plus30Installer.exe
