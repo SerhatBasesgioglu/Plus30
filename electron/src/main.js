@@ -64,12 +64,7 @@ function jarFinder() {
     pathh = path.join(__dirname, "../resources", "Plus30Server.jar");
     console.log("Running in development");
   } else {
-    pathh = path.join(
-      __dirname,
-      "../../../../win-unpacked/resources",
-      "app.asar.unpacked/resources",
-      "Plus30Server.jar"
-    );
+    pathh = path.join(__dirname, "../../../resources", "app.asar.unpacked/resources", "Plus30Server.jar");
   }
   return pathh;
 }

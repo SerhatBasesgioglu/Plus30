@@ -1,13 +1,17 @@
 {
-  "name": "Plus30",
+  "name": "plus30",
+  "appId": "com.aydakar.${name}",
   "version": "0.1.0",
-  "description": "",
   "main": "src/main.js",
   "type": "module",
   "build": {
     "asarUnpack": [
       "resources/Plus30Server.jar"
-    ]
+    ],
+    "win": {
+      "target": "nsis",
+      "artifactName": "${name}Installer.${ext}"
+    }
   },
   "scripts": {
     "start": "set APP_DEV=true && electron .",
