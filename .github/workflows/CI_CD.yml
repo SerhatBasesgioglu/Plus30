@@ -34,7 +34,7 @@ jobs:
           npm run build
 
       - name: Copy frontend dist to Electron
-        run: cp -R frontend/dist electron/resources/
+        run: cp -R frontend/dist/* electron/resources/
 
       - name: Build Electron app
         run: |
