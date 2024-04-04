@@ -6,7 +6,7 @@ import Miscellaneous from "./Miscellaneous";
 
 import { useState } from "react";
 import Button from "components/Button";
-const style = "text-2xs bg-zinc-600  min-h-screen";
+const style = "bg-zinc-600  min-h-screen";
 
 const Home = () => {
   const [activeTab, setActiveTab] = useState(1);

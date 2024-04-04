@@ -96,7 +96,7 @@ const LobbyList = ({ className }) => {
       </div>
 
       <Table
-        className="text-2xs"
+        className="text-xs"
         columns={columns}
         data={lobbies}
         filters={applyFilters}
