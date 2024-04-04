@@ -1,9 +1,6 @@
 # Plus30
 
 Currently on development!
-
-Official Website: https://plus30.lol (empty yet)
-
 Plus30 aims to automate some tasks for the custom game lobbies (Centered around Howling Abyss).
 
 # Current Features
@@ -48,15 +45,9 @@ General
 
 # Setup
 
-Release is not available, backend and frontend servers can be run on IntelliJ and VS Code respectively.
+.exe file can be downloaded from releases tab.
 
-An executable can be created using the following steps:
-
-Backend->Jar (.\mvnw clean package)
-
-Frontend->Build (npm run build)
-
-Merge these in an Electron application, create the executable using electron builder. Jar should be called by the frontend app and it should be closed by it as well. Otherwise backend instance will continue to run on background. If that is the case it can be closed from task manager.
+If you want to compile it on your local, clone the repo and run ./autobuilder.sh, it will build into electron/dist folder.
 
 # Issues / Contributions
 
