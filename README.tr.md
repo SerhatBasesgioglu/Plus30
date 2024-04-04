@@ -8,8 +8,15 @@ Plus30 League of Legends özel oyun adminleri için yapılan ufak bir uygulamad�
 
 # Mevcut Özellikler
 
-- Bloklu oyuncuları karalisteye alma (Lobiden otomatik atılırlar)
 - Lobi oluşturma (Preset oluşturulup tekrar kullanılabilir)
+  
+![CreateLobby](https://github.com/SerhatBasesgioglu/Plus30/assets/55340640/610340bc-ef91-4e17-af91-d60318f88cdc)
+
+- Bloklu oyuncuları karalisteye alma (Lobiden otomatik atılırlar)
+  
+![KickBlocked](https://github.com/SerhatBasesgioglu/Plus30/assets/55340640/5c5ba5d0-6a59-498e-adc1-4dd50d96d7c1)
+
+
 - Lobileri filtreleme ve lobilere girme
 
 # Planlanan Özellikler
