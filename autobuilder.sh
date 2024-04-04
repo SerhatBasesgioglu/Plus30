@@ -10,6 +10,7 @@ npm install
 npm run build
 #electron merge, build
 cd ..
+mkdir electron/resources
 cp backend/target/*.jar electron/resources
 cp -R frontend/dist/* electron/resources
 cd electron

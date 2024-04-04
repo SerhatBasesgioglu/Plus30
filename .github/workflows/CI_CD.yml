@@ -24,26 +24,23 @@ jobs:
           cd backend
           mvn clean package
 
-      - name: Copy Backend JAR to Electron
-        run: cp backend/target/*.jar electron/resources/
-
       - name: Build Frontend
         run: |
           cd frontend
           npm install
           npm run build
 
-      - name: Copy frontend dist to Electron
-        run: cp -R frontend/dist/* electron/resources/
+      - name: Copy Builds to Electron
+        run: |
+          mkdir electron/resources
+          cp backend/target/*.jar electron/resources/
+          cp -R frontend/dist/* electron/resources/
 
       - name: Build Electron app
         run: |
           cd electron
           npm install
           npm run dist
-
-      - name: Check contents of electron/dist directory
-        run: ls electron/dist/
 
       - name: Deployment
         uses: "marvinpinto/action-automatic-releases@latest"
