@@ -1,5 +1,5 @@
 # Plus30
-[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/SerhatBasesgioglu/Plus30/edit/main/README.md)
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/SerhatBasesgioglu/Plus30/blob/main/README.md)
 [![tr](https://img.shields.io/badge/lang-tr-green.svg)](https://github.com/SerhatBasesgioglu/Plus30/blob/main/README.tr.md)
 
 Geliştirme aşamasında, bolca hata ve bug bulundurur.
