@@ -1,4 +1,6 @@
 # Plus30
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/SerhatBasesgioglu/Plus30/edit/main/README.md)
+[![tr](https://img.shields.io/badge/lang-tr-green.svg)](https://github.com/SerhatBasesgioglu/Plus30/blob/main/README.tr.md)
 
 Currently on development!
 Plus30 aims to automate some tasks for the custom game lobbies (Centered around Howling Abyss).
