@@ -55,7 +55,7 @@ const LobbyForm = () => {
         <div className="">
           <label className="block font-medium">Lobby Name</label>
           <input
-            className="border border-gray-400 w-40"
+            className="border border-gray-400 w-44"
             type="text"
             name="lobbyName"
             value={inputs.lobbyName}
@@ -65,7 +65,7 @@ const LobbyForm = () => {
         <div className="">
           <label className="block font-medium">Password</label>
           <input
-            className="border border-gray-400 w-40"
+            className="border border-gray-400 w-44"
             type="text"
             name="lobbyPassword"
             value={inputs.lobbyPassword}
@@ -74,7 +74,7 @@ const LobbyForm = () => {
         </div>
         <div className="">
           <label className="block font-medium">Game Type</label>
-          <select className="border border-gray-400 w-40" name="mapId" value={inputs.mapId} onChange={handleChange}>
+          <select className="border border-gray-400 w-44" name="mapId" value={inputs.mapId} onChange={handleChange}>
             <option value={12}>Howling Abyss</option>
             <option value={11}>Summoners Rift</option>
           </select>
@@ -82,7 +82,7 @@ const LobbyForm = () => {
         <div className="">
           <label className="block font-medium">Team Size</label>
           <select
-            className="border border-gray-400 w-40"
+            className="border border-gray-400 w-44"
             name="teamSize"
             value={inputs.teamSize}
             onChange={handleChange}
@@ -97,7 +97,7 @@ const LobbyForm = () => {
         <div className="">
           <label className="block font-medium">Spectator</label>
           <select
-            className="border border-gray-400 w-40"
+            className="border border-gray-400 w-44"
             name="spectatorPolicy"
             value={inputs.spectatorPolicy}
             onChange={handleChange}
@@ -117,7 +117,6 @@ const LobbyForm = () => {
       </form>
       <div>
         <p className="mt-2">Presets</p>
-
         <Button className={`${presetIndex === 0 ? "bg-blue-800" : ""}`} onClick={() => setPresetIndex(0)} text="1" />
         <Button className={`${presetIndex === 1 ? "bg-blue-800" : ""}`} onClick={() => setPresetIndex(1)} text="2" />
         <Button className={`${presetIndex === 2 ? "bg-blue-800" : ""}`} onClick={() => setPresetIndex(2)} text="3" />
