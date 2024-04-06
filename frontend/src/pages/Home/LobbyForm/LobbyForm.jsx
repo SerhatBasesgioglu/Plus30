@@ -108,10 +108,10 @@ const LobbyForm = () => {
             <option value="NotAllowed">Not</option>
           </select>
           <div className="my-1">
-            <Button text="Submit" type="submit" className=""></Button>
-            <Button text="Save" type="button" className="" onClick={handleSave} />
-            <Button text="Load" type="button" className="" onClick={handleLoad} />
-            <Button text="Clear" type="button" className="" onClick={handleClear} />
+            <Button text="Submit" type="submit" className="bg-green-500 hover:bg-green-600"></Button>
+            <Button text="Save" type="button" className="bg-yellow-500 hover:bg-yellow-600" onClick={handleSave} />
+            <Button text="Load" type="button" className="bg-blue-500 hover:bg-blue-600" onClick={handleLoad} />
+            <Button text="Clear" type="button" className="bg-red-500 hover:bg-red-600" onClick={handleClear} />
           </div>
         </div>
       </form>
@@ -119,9 +119,7 @@ const LobbyForm = () => {
         <p className="mt-2">Presets</p>
 
         <Button className={`${presetIndex === 0 ? "bg-blue-800" : ""}`} onClick={() => setPresetIndex(0)} text="1" />
-
         <Button className={`${presetIndex === 1 ? "bg-blue-800" : ""}`} onClick={() => setPresetIndex(1)} text="2" />
-
         <Button className={`${presetIndex === 2 ? "bg-blue-800" : ""}`} onClick={() => setPresetIndex(2)} text="3" />
       </div>
     </div>

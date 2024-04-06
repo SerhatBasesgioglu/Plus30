@@ -81,16 +81,16 @@ const LobbyList = ({ className }) => {
   return (
     <div className={className}>
       <div className="">
-        <Button className="bg-yellow-500" onClick={lobbyData} text="Refresh" />
+        <Button className="bg-yellow-500 hover:bg-yellow-600" onClick={lobbyData} text="Refresh" />
 
         <Button
           text="Default Lobbies"
-          className={isDefaultChecked ? "bg-green-400" : "bg-red-400"}
+          className={isDefaultChecked ? "bg-green-400 hover:bg-green-500" : "bg-red-400 hover:bg-red-500"}
           onClick={handleDefaultToggle}
         />
         <Button
           text="Pass Lobbies"
-          className={isPasswordChecked ? "bg-green-400" : "bg-red-400"}
+          className={isPasswordChecked ? "bg-green-400 hover:bg-green-500" : "bg-red-400 hover:bg-red-500"}
           onClick={handlePasswordToggle}
         />
       </div>
