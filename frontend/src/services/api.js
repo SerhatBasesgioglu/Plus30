@@ -9,8 +9,7 @@ export const get = async (path) => {
     const response = await axiosInstance.get(path);
     return response.data;
   } catch (error) {
-    console.error("Error while fetching data: " + error);
-    throw error;
+    console.error("Error while fetching data: " + JSON.stringify(error));
   }
 };
 
@@ -19,8 +18,8 @@ export const post = async (path, data = null) => {
     const response = await axiosInstance.post(path, data);
     return response.data;
   } catch (error) {
-    console.error("Error while posting data: " + error);
-    throw error;
+    if (error.response.data.status == 404) throw error;
+    console.error("Error while posting data: " + JSON.stringify(error));
   }
 };
 
@@ -29,8 +28,7 @@ export const put = async (path, data = null) => {
     const response = await axiosInstance.put(path, data);
     return response.data;
   } catch (error) {
-    console.error("Error while posting data: " + error);
-    throw error;
+    console.error("Error while putting data: " + JSON.stringify(error));
   }
 };
 
@@ -39,7 +37,6 @@ export const remove = async (path) => {
     const response = await axiosInstance.delete(path);
     return response.data;
   } catch (error) {
-    console.error("Error while fetching data: " + error);
-    throw error;
+    console.error("Error while removing data: " + JSON.stringify(error));
   }
 };

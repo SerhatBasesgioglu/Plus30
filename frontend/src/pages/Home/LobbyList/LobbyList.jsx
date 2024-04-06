@@ -26,8 +26,18 @@ const LobbyList = ({ className }) => {
     console.log(data);
   };
 
-  const joinLobby = async (id) => {
-    return post("/lobby/join", { lobbyId: id });
+  const joinLobby = async (lobby) => {
+    if (lobby.hasPassword) {
+      console.log("This lobby has password");
+      return 0;
+    }
+    try {
+      let response = post("/lobby/join", { lobbyId: lobby.id });
+      console.log(`This is the error ${await response}`);
+      return response;
+    } catch (error) {
+      console.log("Lobby is not available anymore");
+    }
   };
 
   const applyFilters = (lobby) => {
@@ -94,13 +104,12 @@ const LobbyList = ({ className }) => {
           onClick={handlePasswordToggle}
         />
       </div>
-
       <Table
         className="text-xs"
         columns={columns}
         data={lobbies}
         filters={applyFilters}
-        handleRowDoubleClick={(row) => joinLobby(row.id)}
+        handleRowDoubleClick={(row) => joinLobby(row)}
       />
     </div>
   );
