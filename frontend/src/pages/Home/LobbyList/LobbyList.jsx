@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import Table from "components/Table/Table";
+import Table from "components/Table";
 import Button from "components/Button";
+import Popup from "components/Popup";
 import { get, post } from "services/api";
 
 const LobbyList = ({ className }) => {
@@ -23,20 +24,24 @@ const LobbyList = ({ className }) => {
       return 0;
     });
     setLobbies(data);
-    console.log(data);
+  };
+
+  const [isPopupActive, setIsPopupActive] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("Default popup message");
+
+  const handlePopupClose = () => {
+    setIsPopupActive(false);
   };
 
   const joinLobby = async (lobby) => {
-    if (lobby.hasPassword) {
-      console.log("This lobby has password");
-      return 0;
-    }
     try {
-      let response = post("/lobby/join", { lobbyId: lobby.id });
-      console.log(`This is the error ${await response}`);
-      return response;
+      post("/lobby/join", { lobbyId: lobby.id });
     } catch (error) {
-      console.log("Lobby is not available anymore");
+      console.log(JSON.stringify(error));
+      if (error.response.data.status === 404) setPopupMessage("This lobby is not available anymore");
+      if (error.response.status === 432) setPopupMessage("This lobby is full");
+      if (lobby.hasPassword) setPopupMessage("This lobby has password");
+      setIsPopupActive(true);
     }
   };
 
@@ -90,9 +95,9 @@ const LobbyList = ({ className }) => {
 
   return (
     <div className={className}>
+      {isPopupActive && <Popup text={popupMessage} onClick={handlePopupClose} />}
       <div className="">
-        <Button className="bg-yellow-500 hover:bg-yellow-600" onClick={lobbyData} text="Refresh" />
-
+        <Button text="Refresh" className="bg-yellow-500 hover:bg-yellow-600" onClick={lobbyData} />
         <Button
           text="Default Lobbies"
           className={isDefaultChecked ? "bg-green-400 hover:bg-green-500" : "bg-red-400 hover:bg-red-500"}
