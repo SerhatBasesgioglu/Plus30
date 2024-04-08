@@ -35,9 +35,8 @@ const LobbyList = ({ className }) => {
 
   const joinLobby = async (lobby) => {
     try {
-      post("/lobby/join", { lobbyId: lobby.id });
+      await post("/lobby/join", { lobbyId: lobby.id });
     } catch (error) {
-      console.log(JSON.stringify(error));
       if (error.response.data.status === 404) setPopupMessage("This lobby is not available anymore");
       if (error.response.status === 432) setPopupMessage("This lobby is full");
       if (lobby.hasPassword) setPopupMessage("This lobby has password");

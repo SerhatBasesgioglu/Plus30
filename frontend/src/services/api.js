@@ -39,6 +39,11 @@ const execute = async (method, path, data = null) => {
     }
     return response.data;
   } catch (error) {
-    console.error("Request error", error);
+    let statusCode = error.response.data.status;
+    let method = error.config.method;
+    if (statusCode === 403 && method === "post") throw error; //lobby has password
+    if (statusCode === 404 && method === "post") throw error; //lobby is not available anymore
+    if (statusCode === 432 && method === "post") throw error; //lobby is full
+    console.error("Request error", JSON.stringify(error.response));
   }
 };
