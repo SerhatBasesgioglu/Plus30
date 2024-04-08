@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import Table from "components/Table/Table";
+import Table from "components/Table";
 import Button from "components/Button";
+import Popup from "components/Popup";
 import { get, post } from "services/api";
 
 const LobbyList = ({ className }) => {
@@ -23,11 +24,24 @@ const LobbyList = ({ className }) => {
       return 0;
     });
     setLobbies(data);
-    console.log(data);
   };
 
-  const joinLobby = async (id) => {
-    return post("/lobby/join", { lobbyId: id });
+  const [isPopupActive, setIsPopupActive] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("Default popup message");
+
+  const handlePopupClose = () => {
+    setIsPopupActive(false);
+  };
+
+  const joinLobby = async (lobby) => {
+    try {
+      await post("/lobby/join", { lobbyId: lobby.id });
+    } catch (error) {
+      if (error.response.data.status === 404) setPopupMessage("This lobby is not available anymore");
+      if (error.response.status === 432) setPopupMessage("This lobby is full");
+      if (lobby.hasPassword) setPopupMessage("This lobby has password");
+      setIsPopupActive(true);
+    }
   };
 
   const applyFilters = (lobby) => {
@@ -80,27 +94,26 @@ const LobbyList = ({ className }) => {
 
   return (
     <div className={className}>
+      {isPopupActive && <Popup text={popupMessage} onClick={handlePopupClose} />}
       <div className="">
-        <Button className="bg-yellow-500" onClick={lobbyData} text="Refresh" />
-
+        <Button text="Refresh" className="bg-yellow-500 hover:bg-yellow-600" onClick={lobbyData} />
         <Button
           text="Default Lobbies"
-          className={isDefaultChecked ? "bg-green-400" : "bg-red-400"}
+          className={isDefaultChecked ? "bg-green-400 hover:bg-green-500" : "bg-red-400 hover:bg-red-500"}
           onClick={handleDefaultToggle}
         />
         <Button
           text="Pass Lobbies"
-          className={isPasswordChecked ? "bg-green-400" : "bg-red-400"}
+          className={isPasswordChecked ? "bg-green-400 hover:bg-green-500" : "bg-red-400 hover:bg-red-500"}
           onClick={handlePasswordToggle}
         />
       </div>
-
       <Table
         className="text-xs"
         columns={columns}
         data={lobbies}
         filters={applyFilters}
-        handleRowDoubleClick={(row) => joinLobby(row.id)}
+        handleRowDoubleClick={(row) => joinLobby(row)}
       />
     </div>
   );

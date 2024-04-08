@@ -21,12 +21,12 @@ const LobbySettings = () => {
   return (
     <div className="mt-4">
       <Button
-        className={!kickBlocked ? "bg-green-400" : "bg-red-400"}
+        className={!kickBlocked ? "bg-green-400 hover:bg-green-500" : "bg-red-400 hover:bg-red-500"}
         text="Kick Blocked"
         onClick={handleBlockedToggle}
       />
       <Button
-        className={!kickBlackList ? "bg-green-400" : "bg-red-400"}
+        className={!kickBlackList ? "bg-green-400 hover:bg-green-500" : "bg-red-400 hover:bg-red-500"}
         text="Kick Blacklisted"
         onClick={handleBlackListToggle}
       />

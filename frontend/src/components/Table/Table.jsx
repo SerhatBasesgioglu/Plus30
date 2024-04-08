@@ -9,7 +9,7 @@ const Table = ({ columns, data, className, filters, handleRowDoubleClick }) => {
           <tr>
             {columns.map((column, columnIndex) => (
               <th
-                className="text-left select-none"
+                className="text-left select-none bg-green-800"
                 key={columnIndex}
                 style={{ width: `${(column.widthRatio / totalRatio) * 100}%` }}
               >
@@ -22,7 +22,7 @@ const Table = ({ columns, data, className, filters, handleRowDoubleClick }) => {
           {data &&
             data.filter(filters).map((row, rowIndex) => (
               <tr
-                className="border border-zinc-700 select-none"
+                className=" bg-blue-600 hover:bg-blue-700 select-none"
                 key={rowIndex}
                 onDoubleClick={() => handleRowDoubleClick(row)}
               >
