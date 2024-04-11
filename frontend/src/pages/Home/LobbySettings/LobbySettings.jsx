@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Button from "components/Button";
 import { get } from "services/api";
+import KickList from "./KickList";
 
 const LobbySettings = () => {
   const [kickBlocked, setKickBlocked] = useState(true);
@@ -18,6 +19,7 @@ const LobbySettings = () => {
   const handleBlackListToggle = () => {
     setKickBlackList(!kickBlackList);
   };
+
   return (
     <div className="mt-4">
       <Button
@@ -30,6 +32,7 @@ const LobbySettings = () => {
         text="Kick Blacklisted"
         onClick={handleBlackListToggle}
       />
+      <KickList />
     </div>
   );
 };
