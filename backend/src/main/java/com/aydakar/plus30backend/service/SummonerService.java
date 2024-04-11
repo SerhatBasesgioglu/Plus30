@@ -5,6 +5,7 @@ import com.aydakar.plus30backend.repository.SummonerRepository;
 import com.aydakar.plus30backend.util.LCUConnector;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.core.util.Json;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,12 +23,13 @@ public class SummonerService {
         connector.connect();
     }
 
-    public JsonNode currentSummoner() {
+    public Summoner currentSummoner() {
         try {
-            JsonNode result = connector.get("/lol-summoner/v1/current-summoner");
-            return result;
+            JsonNode summonerJson = connector.get("/lol-summoner/v1/current-summoner");
+            Summoner summoner = objectMapper.treeToValue(summonerJson, Summoner.class);
+            return summoner;
         } catch (Exception e) {
-            return objectMapper.valueToTree(e);
+            return null;
         }
     }
 
@@ -42,7 +44,6 @@ public class SummonerService {
     public JsonNode changeStatusMessage(JsonNode inputs) {
         return connector.put("/lol-chat/v1/me", inputs);
     }
-
 
     public List<Summoner> getBlackList() {
         return (List<Summoner>) summonerRepository.findAll();

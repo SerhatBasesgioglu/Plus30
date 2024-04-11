@@ -17,7 +17,7 @@ public class SummonerController {
     }
 
     @GetMapping("/")
-    public JsonNode currentSummoner() {
+    public Summoner currentSummoner() {
         return summonerService.currentSummoner();
     }
 
