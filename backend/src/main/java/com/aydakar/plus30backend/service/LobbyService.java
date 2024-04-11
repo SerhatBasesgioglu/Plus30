@@ -1,9 +1,9 @@
 package com.aydakar.plus30backend.service;
 
-import com.aydakar.plus30backend.dao.SummonerDAO;
 import com.aydakar.plus30backend.entity.Bot;
 import com.aydakar.plus30backend.entity.CustomGame;
 import com.aydakar.plus30backend.entity.Summoner;
+import com.aydakar.plus30backend.repository.SummonerRepository;
 import com.aydakar.plus30backend.util.LCUConnector;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -23,17 +23,17 @@ public class LobbyService {
     private final LCUConnector connector;
     private final ObjectMapper objectMapper;
     private final ModelMapper modelMapper;
+    private final SummonerRepository summonerRepository;
     private final TaskScheduler taskScheduler;
-    private final SummonerDAO summonerDAO;
     private ScheduledFuture<?> scheduledFuture;
 
     public LobbyService(LCUConnector connector, ObjectMapper objectMapper,
-                        ModelMapper modelMapper, TaskScheduler taskScheduler, SummonerDAO summonerDAO) {
+                        ModelMapper modelMapper, SummonerRepository summonerRepository, TaskScheduler taskScheduler) {
         this.connector = connector;
         this.objectMapper = objectMapper;
         this.modelMapper = modelMapper;
+        this.summonerRepository = summonerRepository;
         this.taskScheduler = taskScheduler;
-        this.summonerDAO = summonerDAO;
         connector.connect();
     }
 
@@ -137,12 +137,10 @@ public class LobbyService {
             List<Summoner> spectators = Arrays.asList(objectMapper.treeToValue(spectatorsJson, Summoner[].class));
             List<Summoner> blocked = Arrays.asList(objectMapper.treeToValue(blockedJson, Summoner[].class));
             Summoner currentSummoner = objectMapper.treeToValue(currentSummonerJson, Summoner.class);
-            List<Summoner> blackList = summonerDAO.findAll();
 
             List<Summoner> kickList = new ArrayList<>(blocked);
             List<Summoner> lobbyList = new ArrayList<>(members);
             lobbyList.addAll(spectators);
-            kickList.addAll(blackList);
 
             for (Summoner member : lobbyList) {
                 for (Summoner kick : kickList) {
@@ -181,7 +179,6 @@ public class LobbyService {
                     String endpoint = "/lol-summoner/v2/summoners/puuid/" + puuid;
                     JsonNode summonerJson = connector.get(endpoint);
                     Summoner summoner = objectMapper.treeToValue(summonerJson, Summoner.class);
-                    //summonerDAO.save(summoner);
                     memberList.add(summoner);
                 }
             }

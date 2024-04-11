@@ -36,9 +36,30 @@ public class SummonerController {
         return summonerService.changeStatusMessage(inputs);
     }
 
-    @GetMapping("block-list")
-    public List<Summoner> getBlockedSummoners() {
-        return summonerService.getBlockedSummoners();
+    @GetMapping("/blacklist")
+    public List<Summoner> getBlackList() {
+        return summonerService.getBlackList();
+    }
+
+    @GetMapping("/blacklist/{id}")
+    public String getSummonerFromBlackList(){
+        return "This is not implemented yet";
+    }
+
+    @PostMapping("/blacklist")
+    public void addBlackList(@RequestBody Summoner summoner){
+        summonerService.addBlackList(summoner);
+    }
+
+
+    @DeleteMapping("blacklist/{id}")
+    public void deleteFromBlacklist(@PathVariable String id){
+        summonerService.deleteBlackList(id);
+    }
+
+    @DeleteMapping("blacklist-all")
+    public void deleteBlackList(){
+        summonerService.deleteAllBlackList();
     }
 
 }

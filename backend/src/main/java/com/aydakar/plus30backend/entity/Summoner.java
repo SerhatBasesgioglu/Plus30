@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.ToString;
 
 @Data
-@ToString
 @Entity
 public class Summoner {
     String summonerId;

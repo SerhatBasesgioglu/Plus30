@@ -73,4 +73,5 @@ public class LobbyController {
     public JsonNode invite(@RequestBody JsonNode inputs) {
         return lobbyService.invite(inputs);
     }
+
 }

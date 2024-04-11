@@ -1,7 +1,7 @@
 package com.aydakar.plus30backend.service;
 
-import com.aydakar.plus30backend.dao.SummonerDAO;
 import com.aydakar.plus30backend.entity.Summoner;
+import com.aydakar.plus30backend.repository.SummonerRepository;
 import com.aydakar.plus30backend.util.LCUConnector;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,12 +13,12 @@ import java.util.List;
 public class SummonerService {
     private final LCUConnector connector;
     private final ObjectMapper objectMapper;
-    private final SummonerDAO summonerDAO;
+    private final SummonerRepository summonerRepository;
 
-    public SummonerService(LCUConnector connector, ObjectMapper objectMapper, SummonerDAO summonerDAO) {
+    public SummonerService(LCUConnector connector, ObjectMapper objectMapper, SummonerRepository summonerRepository) {
         this.connector = connector;
         this.objectMapper = objectMapper;
-        this.summonerDAO = summonerDAO;
+        this.summonerRepository = summonerRepository;
         connector.connect();
     }
 
@@ -43,11 +43,21 @@ public class SummonerService {
         return connector.put("/lol-chat/v1/me", inputs);
     }
 
-    public List<Summoner> getBlockedSummoners() {
-        return summonerDAO.findAll();
+
+    public List<Summoner> getBlackList() {
+        return (List<Summoner>) summonerRepository.findAll();
     }
 
-    public void addSummonerToBlockList(Summoner summoner) {
-        summonerDAO.save(summoner);
+    public void addBlackList(Summoner summoner){
+        summonerRepository.save(summoner);
+    }
+
+    public void deleteBlackList(String id){
+        summonerRepository.deleteById(id);
+    }
+
+    public void deleteAllBlackList() {
+        summonerRepository.deleteAll();
+
     }
 }
