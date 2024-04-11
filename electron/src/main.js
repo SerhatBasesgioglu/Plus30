@@ -20,7 +20,6 @@ const createWindow = () => {
     },
   });
   mainWindow.loadFile("./resources/index.html");
-  mainWindow.openDevTools();
 };
 
 app.whenReady().then(() => {
