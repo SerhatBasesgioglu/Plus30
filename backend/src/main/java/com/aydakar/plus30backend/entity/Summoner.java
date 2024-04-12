@@ -1,6 +1,8 @@
 package com.aydakar.plus30backend.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
@@ -14,7 +16,8 @@ public class Summoner {
     int profileIconId;
     int summonerLevel;
     @Id
-    String puuid;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    int puuid;
     String gameName;
     String tagLine;
     boolean isLeader;
