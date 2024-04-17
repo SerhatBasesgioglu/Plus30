@@ -5,10 +5,7 @@ import com.aydakar.plus30backend.repository.SummonerRepository;
 import com.aydakar.plus30backend.util.LCUConnector;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.v3.core.util.Json;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class SummonerService {
@@ -45,20 +42,5 @@ public class SummonerService {
         return connector.put("/lol-chat/v1/me", inputs);
     }
 
-    public List<Summoner> getBlackList() {
-        return (List<Summoner>) summonerRepository.findAll();
-    }
 
-    public void addBlackList(Summoner summoner){
-        summonerRepository.save(summoner);
-    }
-
-    public void deleteBlackList(String id){
-        summonerRepository.deleteById(id);
-    }
-
-    public void deleteAllBlackList() {
-        summonerRepository.deleteAll();
-
-    }
 }

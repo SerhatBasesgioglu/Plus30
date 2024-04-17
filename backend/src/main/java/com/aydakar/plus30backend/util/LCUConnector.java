@@ -85,7 +85,7 @@ public class LCUConnector {
     }
 
     private JsonNode execute(String method, String endPoint, JsonNode data) {
-        WebClient.ResponseSpec responseSpec = null;
+        WebClient.ResponseSpec responseSpec;
         try {
             responseSpec = switch (method) {
                 case "get" -> client.get().uri(endPoint).retrieve();
