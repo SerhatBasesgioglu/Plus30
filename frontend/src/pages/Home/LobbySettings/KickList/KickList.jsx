@@ -15,7 +15,7 @@ const KickList = () => {
     let tagLine;
     if (hashPosition > -1) tagLine = summonerName.slice(hashPosition + 1);
     const data = { gameName: gameName, tagLine: tagLine };
-    await post("/blacklist/", data);
+    await post("/summoners", data);
     fetchSummonerList();
   };
 

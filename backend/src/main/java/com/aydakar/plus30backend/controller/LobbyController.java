@@ -11,7 +11,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/lobby")
+@RequestMapping("")
 public class LobbyController {
     private final LobbyService lobbyService;
 
@@ -19,59 +19,68 @@ public class LobbyController {
         this.lobbyService = lobbyService;
     }
 
-    @GetMapping("/custom-games")
+    @GetMapping("/lobby/custom-games")
     public List<CustomGame> getCustomGames() {
         return lobbyService.getCustomGames();
     }
 
-    @PostMapping("")
-    public JsonNode create(@RequestBody JsonNode inputs) {
+    @PostMapping("/lobby")
+    public JsonNode createLobby(@RequestBody JsonNode inputs) {
         return lobbyService.create(inputs);
     }
 
-    @DeleteMapping("")
-    public JsonNode delete() {
+    @DeleteMapping("/lobby")
+    public JsonNode deleteLobby() {
         return lobbyService.delete();
     }
 
-    @GetMapping("")
-    public JsonNode get() {
+    @GetMapping("/lobby")
+    public JsonNode getLobby() {
         return lobbyService.get();
     }
 
-    @GetMapping("/start-kicker")
+    @GetMapping("/lobby/start-kicker")
     public void startAutoKicker() {
         lobbyService.startAutoKicker(1000);
     }
 
-    @GetMapping("/stop-kicker")
+    @GetMapping("/lobby/stop-kicker")
     public void stopVoidKicker() {
         lobbyService.stopAutoKicker();
     }
 
-    @PostMapping("/join")
+    @PostMapping("/lobby/join")
     public JsonNode joinLobby(@RequestBody JsonNode inputs) {
         return lobbyService.joinLobby(inputs);
     }
 
-    @GetMapping("/members")
+    @GetMapping("/lobby/members")
     public List<Summoner> members() {
         return lobbyService.members();
     }
 
-    @PostMapping("/bot")
+    @PostMapping("/lobby/bot")
     public JsonNode addBot(@RequestBody Bot inputs) {
         return lobbyService.addBot(inputs);
     }
 
-    @GetMapping("/available-bots")
+    @GetMapping("/lobby/available-bots")
     public JsonNode availableBots() {
         return lobbyService.availableBots();
     }
 
-    @PostMapping("/invite")
+    @PostMapping("/lobby/invite")
     public JsonNode invite(@RequestBody JsonNode inputs) {
         return lobbyService.invite(inputs);
     }
 
+    @GetMapping("/lobby/start")
+    public JsonNode startGame() {
+        return lobbyService.start();
+    }
+
+    @PostMapping("/lobby/reroll")
+    public JsonNode reroll() {
+        return lobbyService.reroll();
+    }
 }

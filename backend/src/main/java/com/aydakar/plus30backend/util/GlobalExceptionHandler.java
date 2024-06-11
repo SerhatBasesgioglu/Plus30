@@ -17,7 +17,6 @@ public class GlobalExceptionHandler {
         body.put("timestamp", LocalDateTime.now());
         body.put("status", ex.getHttpStatusCode());
         body.put("error", ex.getMessage());
-        System.out.println(ex);
         return new ResponseEntity<>(body, HttpStatusCode.valueOf(ex.getHttpStatusCode()));
     }
 }
