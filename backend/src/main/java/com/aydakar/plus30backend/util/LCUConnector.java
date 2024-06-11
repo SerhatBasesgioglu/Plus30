@@ -1,7 +1,6 @@
 package com.aydakar.plus30backend.util;
 
 import com.aydakar.plus30backend.entity.ApiError;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
@@ -59,49 +58,49 @@ public class LCUConnector {
     }
 
 
-    public JsonNode get(String endPoint) {
-        return execute("get", endPoint, null);
+    public <T> T get(String endPoint, Class<T> responseType) {
+        return execute("get", endPoint, null, responseType);
     }
 
-    public JsonNode post(String endPoint) {
-        return execute("post", endPoint, null);
+    public <T> T post(String endPoint, Class<T> responseType) {
+        return execute("post", endPoint, null, responseType);
     }
 
-    public JsonNode post(String endPoint, JsonNode data) {
-        return execute("post", endPoint, data);
+    public <T, R> T post(String endPoint, R data, Class<T> responseType) {
+        return execute("post", endPoint, data, responseType);
     }
 
-    public JsonNode put(String endPoint) {
-        return execute("put", endPoint, null);
+    public <T> T put(String endPoint, Class<T> responseType) {
+        return execute("put", endPoint, null, responseType);
 
     }
 
-    public JsonNode put(String endPoint, JsonNode data) {
-        return execute("put", endPoint, data);
+    public <T, R> T put(String endPoint, R data, Class<T> responseType) {
+        return execute("put", endPoint, data, responseType);
     }
 
-    public JsonNode delete(String endPoint) {
-        return execute("delete", endPoint, null);
+    public <T> T delete(String endPoint, Class<T> responseType) {
+        return execute("delete", endPoint, null, responseType);
     }
 
-    private JsonNode execute(String method, String endPoint, JsonNode data) {
-        WebClient.ResponseSpec responseSpec = null;
+    private <T, R> T execute(String method, String endPoint, R data, Class<T> responseType) {
+        WebClient.ResponseSpec responseSpec;
         try {
             responseSpec = switch (method) {
                 case "get" -> client.get().uri(endPoint).retrieve();
                 case "delete" -> client.delete().uri(endPoint).retrieve();
                 case "post" -> (data == null) ?
                         client.post().uri(endPoint).contentType(MediaType.APPLICATION_JSON).retrieve() :
-                        client.post().uri(endPoint).contentType(MediaType.APPLICATION_JSON).body(Mono.just(data), JsonNode.class).retrieve();
+                        client.post().uri(endPoint).contentType(MediaType.APPLICATION_JSON).body(Mono.just(data), responseType).retrieve();
                 case "put" -> (data == null) ?
                         client.put().uri(endPoint).contentType(MediaType.APPLICATION_JSON).retrieve() :
-                        client.put().uri(endPoint).contentType(MediaType.APPLICATION_JSON).body(Mono.just(data), JsonNode.class).retrieve();
+                        client.put().uri(endPoint).contentType(MediaType.APPLICATION_JSON).body(Mono.just(data), responseType).retrieve();
                 default -> null;
             };
             if (responseSpec != null) {
-                JsonNode response = responseSpec.bodyToMono(JsonNode.class)
+                T response = responseSpec.bodyToMono(responseType)
                         .block();
-                System.out.println(response);
+                //System.out.println(response);
                 return response;
             }
         } catch (WebClientResponseException e) {
@@ -119,7 +118,8 @@ public class LCUConnector {
         throw new CustomException(500, "Unknown error occurred");
     }
 
-    public void printInfo() {
-        System.out.println(this.appPort + this.authToken);
+    public String printInfo() {
+        String credentials = this.appPort + this.authToken;
+        return credentials;
     }
 }

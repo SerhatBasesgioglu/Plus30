@@ -1,23 +1,25 @@
 import { useState } from "react";
 import Button from "components/Button";
 import { get } from "services/api";
+import KickList from "./KickList";
 
 const LobbySettings = () => {
   const [kickBlocked, setKickBlocked] = useState(true);
   const [kickBlackList, setKickBlackList] = useState(true);
 
-  const handleBlockedToggle = () => {
+  const handleBlockedToggle = async () => {
     setKickBlocked(!kickBlocked);
     if (kickBlocked) {
-      get("/lobby/start-kicker");
+      await get("/lobby/start-kicker");
     } else {
-      get("/lobby/stop-kicker");
+      await get("/lobby/stop-kicker");
     }
     console.log(kickBlocked);
   };
   const handleBlackListToggle = () => {
     setKickBlackList(!kickBlackList);
   };
+
   return (
     <div className="mt-4">
       <Button
@@ -30,6 +32,7 @@ const LobbySettings = () => {
         text="Kick Blacklisted"
         onClick={handleBlackListToggle}
       />
+      <KickList />
     </div>
   );
 };

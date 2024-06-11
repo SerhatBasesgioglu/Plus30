@@ -37,9 +37,10 @@ const LobbyList = ({ className }) => {
     try {
       await post("/lobby/join", { lobbyId: lobby.id });
     } catch (error) {
-      if (error.response.data.status === 404) setPopupMessage("This lobby is not available anymore");
-      if (error.response.status === 432) setPopupMessage("This lobby is full");
-      if (lobby.hasPassword) setPopupMessage("This lobby has password");
+      const statusCode = error.response.data.status;
+      if (statusCode === 404 || statusCode === 530) setPopupMessage("This lobby is not available anymore");
+      else if (statusCode === 403) setPopupMessage("This lobby has password");
+      else if (statusCode === 432) setPopupMessage("This lobby is full");
       setIsPopupActive(true);
     }
   };

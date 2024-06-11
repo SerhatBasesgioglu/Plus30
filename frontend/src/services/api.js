@@ -41,9 +41,10 @@ const execute = async (method, path, data = null) => {
   } catch (error) {
     let statusCode = error.response.data.status;
     let method = error.config.method;
-    if (statusCode === 403 && method === "post") throw error; //lobby has password
-    if (statusCode === 404 && method === "post") throw error; //lobby is not available anymore
-    if (statusCode === 432 && method === "post") throw error; //lobby is full
+    if (method === "post" && (statusCode === 404 || statusCode === 530)) throw error; //lobby is not available anymore
+    if (method === "post" && statusCode === 403) throw error; //lobby has password
+    if (method === "post" && statusCode === 432) throw error; //lobby is full
+
     console.error("Request error", JSON.stringify(error.response));
   }
 };

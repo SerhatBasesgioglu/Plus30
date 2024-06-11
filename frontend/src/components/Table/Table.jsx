@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-const Table = ({ columns, data, className, filters, handleRowDoubleClick }) => {
+const Table = ({ columns, data, className, filters = (w) => w, handleRowDoubleClick }) => {
   const totalRatio = columns.reduce((acc, column) => acc + column.widthRatio, 0);
 
   return (

@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import LobbyForm from "./LobbyForm";
+import CurrentLobby from "./CurrentLobby";
 import LobbyList from "./LobbyList";
 import LobbySettings from "./LobbySettings";
 import Miscellaneous from "./Miscellaneous";
@@ -18,14 +19,16 @@ const Home = () => {
     <div className={style}>
       <div className="flex justify-center">
         <Button text="Create Lobby" onClick={() => handleTabClick(1)} />
-        <Button text="Lobby List" onClick={() => handleTabClick(2)} />
-        <Button text="Lobby Settings" onClick={() => handleTabClick(3)} />
-        <Button text="Misc" onClick={() => handleTabClick(4)} />
+        <Button text="Current Lobby" onClick={() => handleTabClick(2)} />
+        <Button text="Lobby List" onClick={() => handleTabClick(3)} />
+        <Button text="Lobby Settings" onClick={() => handleTabClick(4)} />
+        <Button text="Misc" onClick={() => handleTabClick(5)} />
       </div>
       {activeTab === 1 && <LobbyForm />}
-      {activeTab === 2 && <LobbyList />}
-      {activeTab === 3 && <LobbySettings />}
-      {activeTab === 4 && <Miscellaneous />}
+      {activeTab === 2 && <CurrentLobby />}
+      {activeTab === 3 && <LobbyList />}
+      {activeTab === 4 && <LobbySettings />}
+      {activeTab === 5 && <Miscellaneous />}
     </div>
   );
 };
