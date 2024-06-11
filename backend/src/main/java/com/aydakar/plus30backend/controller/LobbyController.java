@@ -56,7 +56,7 @@ public class LobbyController {
 
     @GetMapping("/lobby/members")
     public List<Summoner> members() {
-        return lobbyService.members();
+        return lobbyService.getLobbyMembers();
     }
 
     @PostMapping("/lobby/bot")

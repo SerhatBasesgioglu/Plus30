@@ -100,7 +100,7 @@ public class LCUConnector {
             if (responseSpec != null) {
                 T response = responseSpec.bodyToMono(responseType)
                         .block();
-                System.out.println(response);
+                //System.out.println(response);
                 return response;
             }
         } catch (WebClientResponseException e) {

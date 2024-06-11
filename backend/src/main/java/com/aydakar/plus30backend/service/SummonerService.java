@@ -58,12 +58,7 @@ public class SummonerService {
 
 
     public Summoner getCurrentSummoner() {
-        try {
-            JsonNode summonerJson = connector.get("/lol-summoner/v1/current-summoner", JsonNode.class);
-            return objectMapper.treeToValue(summonerJson, Summoner.class);
-        } catch (Exception e) {
-            return null;
-        }
+        return connector.get("/lol-summoner/v1/current-summoner", Summoner.class);
     }
 
     @Transactional
@@ -83,6 +78,11 @@ public class SummonerService {
             System.out.println("There is an error in getSummonerByTag method");
             return null;
         }
+    }
+
+    public Summoner getSummonerByPuuid(String puuid) {
+        String uri = String.format("/lol-summoner/v2/summoners/puuid/%s", puuid);
+        return connector.get(uri, Summoner.class);
     }
 
 

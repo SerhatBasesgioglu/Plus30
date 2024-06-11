@@ -21,14 +21,16 @@ public class LobbyService {
     private final LCUConnector connector;
     private final ObjectMapper objectMapper;
     private final SummonerService summonerService;
+    private final ChatService chatService;
     private final TaskScheduler taskScheduler;
     private ScheduledFuture<?> scheduledFuture;
 
     public LobbyService(LCUConnector connector, ObjectMapper objectMapper,
-                        SummonerService summonerService, TaskScheduler taskScheduler) {
+                        SummonerService summonerService, ChatService chatService, TaskScheduler taskScheduler) {
         this.connector = connector;
         this.objectMapper = objectMapper;
         this.summonerService = summonerService;
+        this.chatService = chatService;
         this.taskScheduler = taskScheduler;
         connector.connect();
     }
@@ -79,17 +81,11 @@ public class LobbyService {
 
     public JsonNode autoKicker() {
         try {
-            JsonNode lobby = connector.get("/lol-lobby/v2/lobby", JsonNode.class);
-            JsonNode membersJson = lobby.get("members");
-            JsonNode spectatorsJson = lobby.get("gameConfig").get("customSpectators");
-            JsonNode blockedJson = connector.get("/lol-chat/v1/blocked-players", JsonNode.class);
-            JsonNode currentSummonerJson = connector.get("/lol-summoner/v1/current-summoner", JsonNode.class);
-
-            List<Summoner> members = Arrays.asList(objectMapper.treeToValue(membersJson, Summoner[].class));
-            List<Summoner> spectators = Arrays.asList(objectMapper.treeToValue(spectatorsJson, Summoner[].class));
-            List<Summoner> blocked = Arrays.asList(objectMapper.treeToValue(blockedJson, Summoner[].class));
+            List<Summoner> members = getLobbyMembers();
+            List<Summoner> spectators = getLobbySpectators();
+            List<Summoner> blocked = chatService.getBlockedSummoners();
             List<Summoner> blackList = summonerService.findAll();
-            Summoner currentSummoner = objectMapper.treeToValue(currentSummonerJson, Summoner.class);
+            Summoner currentSummoner = summonerService.getCurrentSummoner();
 
             List<Summoner> kickList = new ArrayList<>(blocked);
             List<Summoner> lobbyList = new ArrayList<>(members);
@@ -122,24 +118,25 @@ public class LobbyService {
         return connector.post("/lol-lobby/v1/custom-games/" + lobbyId + "/join", data, JsonNode.class);
     }
 
-    public List<Summoner> members() {
-        JsonNode lobbyMembersJson = connector.get("/lol-lobby/v2/lobby/members", JsonNode.class);
-        List<Summoner> memberList = new ArrayList<>();
-
-        try {
-            if (lobbyMembersJson.isArray()) {
-                for (JsonNode node : lobbyMembersJson) {
-                    String puuid = node.get("puuid").asText();
-                    String endpoint = "/lol-summoner/v2/summoners/puuid/" + puuid;
-                    JsonNode summonerJson = connector.get(endpoint, JsonNode.class);
-                    Summoner summoner = objectMapper.treeToValue(summonerJson, Summoner.class);
-                    memberList.add(summoner);
-                }
-            }
-        } catch (Exception e) {
-            System.out.println(e);
+    public List<Summoner> getLobbyMembers() {
+        List<Summoner> lobbyMembersRaw = Arrays.asList(connector.get("/lol-lobby/v2/lobby/members", Summoner[].class));
+        List<Summoner> summoners = new ArrayList<>();
+        for (Summoner summoner : lobbyMembersRaw) {
+            summoners.add(summonerService.getSummonerByPuuid(summoner.getPuuid()));
         }
-        return memberList;
+        return summoners;
+    }
+
+    public List<Summoner> getLobbySpectators() {
+        try {
+            JsonNode lobby = connector.get("/lol-lobby/v2/lobby", JsonNode.class);
+            JsonNode spectatorsJson = lobby.get("gameConfig").get("customSpectators");
+            return Arrays.asList(objectMapper.treeToValue(spectatorsJson, Summoner[].class));
+        } catch (Exception e) {
+            System.out.println("There is an error while getting lobby spectators");
+            return null;
+        }
+
     }
 
     public JsonNode addBot(Bot bot) {
