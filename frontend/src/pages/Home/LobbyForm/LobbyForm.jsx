@@ -5,7 +5,7 @@ import { post } from "services/api";
 
 const LobbyForm = () => {
   const defaultLobby = {
-    lobbyName: "",
+    lobbyName: "Test",
     lobbyPassword: "",
     mapId: "12",
     teamSize: "1",

@@ -1,15 +1,14 @@
 package com.aydakar.plus30backend.entity.LobbyRequest;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class Configuration {
-    private String gameMode;
-    private String gameMutator;
-    private String gameServerRegion;
-    private int mapId;
+    private String gameMode = "ARAM";
+    private int mapId = 12;
     private Mutators mutators;
-    private Boolean spectatorDelayEnabled;
-    private String spectatorPolicy;
-    private int teamSize;
+    private String spectatorPolicy = "AllAllowed";
+    private int teamSize = 5;
 }

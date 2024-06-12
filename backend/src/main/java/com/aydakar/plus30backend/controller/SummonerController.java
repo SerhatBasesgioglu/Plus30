@@ -9,7 +9,7 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("")
+@RequestMapping("summoner")
 public class SummonerController {
     private final SummonerService summonerService;
 
@@ -17,12 +17,12 @@ public class SummonerController {
         summonerService = theSummonerService;
     }
 
-    @GetMapping("/summoners")
+    @GetMapping()
     public List<Summoner> findAll() {
         return summonerService.findAll();
     }
 
-    @GetMapping("/summoners/{id}")
+    @GetMapping("{id}")
     public Optional<Summoner> findById(@PathVariable String id) {
         Optional<Summoner> summoner = summonerService.findById(id);
         if (summoner.isEmpty()) {
@@ -32,24 +32,18 @@ public class SummonerController {
     }
 
 
-    @PostMapping("/summoners")
-    public Summoner addSummoner(@RequestBody Summoner summoner) {
-        Summoner theSummoner = summonerService.save(summoner);
-        return theSummoner;
-    }
-
-    @PostMapping("/summoners/{gameName}/{tagLine}")
+    @PostMapping("{gameName}/{tagLine}")
     public Summoner addSummonerByTag(@PathVariable String gameName, @PathVariable String tagLine) {
         return summonerService.addSummonerByTag(gameName, tagLine);
     }
 
-    @DeleteMapping("/summoners/{id}")
-    public void deleteSummoner(@RequestBody String id) {
-        summonerService.deleteById(id);
+    @DeleteMapping("{gameName}/{tagLine}")
+    public void deleteSummonerByTag(@PathVariable String gameName, @PathVariable String tagLine) {
+        summonerService.deleteSummonerByTag(gameName, tagLine);
     }
 
 
-    @GetMapping("/summoners/current-summoner")
+    @GetMapping("current-summoner")
     public Summoner currentSummoner() {
         return summonerService.getCurrentSummoner();
     }

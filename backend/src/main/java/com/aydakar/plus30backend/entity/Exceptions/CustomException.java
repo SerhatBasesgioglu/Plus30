@@ -1,4 +1,4 @@
-package com.aydakar.plus30backend.util;
+package com.aydakar.plus30backend.entity.Exceptions;
 
 import lombok.Getter;
 

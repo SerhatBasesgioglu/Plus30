@@ -21,15 +21,13 @@ public class Summoner {
     private String puuid;
 
     @Column(unique = true)
-    private int summonerId;
+    private long summonerId;
 
     private String gameName;
 
     private String tagLine;
 
     private int summonerLevel;
-
-    private Boolean isBlacklisted;
 
     @OneToMany(mappedBy = "summoner")
     private List<OldTag> oldTags;
