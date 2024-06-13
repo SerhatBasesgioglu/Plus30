@@ -65,7 +65,7 @@ public class LobbyService {
     }
 
 
-    public LobbyRequest createLobby(IncomingLobbyRequest req) {
+    public JsonNode createLobby(IncomingLobbyRequest req) {
         Mutators mutators = new Mutators(1);
         Configuration config = new Configuration("ARAM", 12, mutators, "AllAllowed", 5);
         CustomGameLobby lobby = new CustomGameLobby(config, "Test", "");
@@ -79,7 +79,7 @@ public class LobbyService {
 
         String gameMode = config.getMapId() == 12 ? "ARAM" : "CLASSIC";
         config.setGameMode(gameMode);
-        return connector.post("/lol-lobby/v2/lobby", request, LobbyRequest.class);
+        return connector.post("/lol-lobby/v2/lobby", request, JsonNode.class);
     }
 
 
@@ -97,34 +97,29 @@ public class LobbyService {
     }
 
 
-    public JsonNode autoKicker() {
-        try {
-            List<Summoner> members = getLobbyMembers();
-            List<Summoner> spectators = getLobbySpectators();
-            List<Summoner> blocked = chatService.getBlockedSummoners();
-            List<Summoner> blackList = summonerService.findAll();
-            Summoner currentSummoner = summonerService.getCurrentSummoner();
+    private void autoKicker() {
+        List<Summoner> members = getLobbyMembers();
+        List<Summoner> spectators = getLobbySpectators();
+        List<Summoner> blocked = chatService.getBlockedSummoners();
+        List<Summoner> blackList = summonerService.findAll();
+        Summoner currentSummoner = summonerService.getCurrentSummoner();
 
-            List<Summoner> kickList = new ArrayList<>(blocked);
-            List<Summoner> lobbyList = new ArrayList<>(members);
-            lobbyList.addAll(spectators);
-            kickList.addAll(blackList);
+        List<Summoner> kickList = new ArrayList<>(blocked);
+        List<Summoner> lobbyList = new ArrayList<>(members);
+        lobbyList.addAll(spectators);
+        kickList.addAll(blackList);
 
-            for (Summoner member : lobbyList) {
-                for (Summoner kick : kickList) {
-                    long memberId = member.getSummonerId();
-                    long kickId = kick.getSummonerId();
-                    long currentSummonerId = currentSummoner.getSummonerId();
-                    if (memberId == kickId && kickId != currentSummonerId) {
-                        String url = "lol-lobby/v2/lobby/members/" + kick.getSummonerId() + "/kick";
-                        return connector.post(url, JsonNode.class);
-                    }
+        for (Summoner member : lobbyList) {
+            for (Summoner kick : kickList) {
+                long memberId = member.getSummonerId();
+                long kickId = kick.getSummonerId();
+                long currentSummonerId = currentSummoner.getSummonerId();
+                if (memberId == kickId && kickId != currentSummonerId) {
+                    String url = "lol-lobby/v2/lobby/members/" + kick.getSummonerId() + "/kick";
+                    connector.post(url, JsonNode.class);
                 }
             }
-        } catch (Exception e) {
-            return objectMapper.valueToTree(e);
         }
-        return null;
     }
 
 
@@ -157,7 +152,6 @@ public class LobbyService {
             System.out.println("There is an error while getting lobby spectators");
             return null;
         }
-
     }
 
 
@@ -184,5 +178,10 @@ public class LobbyService {
 
     public JsonNode reroll() {
         return connector.post("/lol-champ-select-legacy/v1/session/my-selection/reroll", JsonNode.class);
+    }
+
+    public JsonNode promote(long summonerId) {
+        String uri = String.format("/lol-lobby/v2/lobby/members/%s/promote", summonerId);
+        return connector.post(uri, JsonNode.class);
     }
 }
