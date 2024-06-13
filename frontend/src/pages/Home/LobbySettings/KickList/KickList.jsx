@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Button from "components/Button";
-import { get, post } from "services/api";
+import { get, post, remove } from "services/api";
 import Table from "components/Table";
 const KickList = () => {
   const [summonerName, setSummonerName] = useState("");
@@ -14,16 +14,26 @@ const KickList = () => {
     let gameName = summonerName.slice(0, hashPosition);
     let tagLine;
     if (hashPosition > -1) tagLine = summonerName.slice(hashPosition + 1);
-    const data = { gameName: gameName, tagLine: tagLine };
-    await post("/summoners", data);
+    let uri = "/summoner/" + gameName + "/" + tagLine;
+    await post(uri);
     fetchSummonerList();
   };
 
   const fetchSummonerList = async () => {
-    const summonerListDb = await get("summoner/blacklist");
+    const summonerListDb = await get("summoner");
     console.log(summonerListDb);
     setSummonerList(summonerListDb);
     console.log(summonerList);
+  };
+
+  const deleteSummoner = async (summoner) => {
+    try {
+      let url = "summoner/" + summoner.gameName + "/" + summoner.tagLine;
+      await remove(url);
+      fetchSummonerList();
+    } catch (error) {
+      console.log("hey");
+    }
   };
 
   const handleChange = (e) => {
@@ -36,7 +46,8 @@ const KickList = () => {
         <input name="summonerName" value={summonerName} onChange={handleChange}></input>
         <Button type="submit" text="Add" />
       </form>
-      <Table columns={columns} data={summonerList} />
+      <Button text="Refresh" onClick={fetchSummonerList} />
+      <Table columns={columns} data={summonerList} handleRowDoubleClick={(row) => deleteSummoner(row)} />
     </div>
   );
 };

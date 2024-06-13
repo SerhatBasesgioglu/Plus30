@@ -41,6 +41,7 @@ app.on("window-all-closed", () => {
 function startBackend() {
   const backendPath = path.resolve(__dirname, jarPath);
   backendProcess = spawn("javaw", ["-jar", backendPath]);
+  console.log("Backend process is starting");
 }
 
 function stopBackend() {

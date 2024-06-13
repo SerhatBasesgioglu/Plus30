@@ -2,9 +2,7 @@
 [![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/SerhatBasesgioglu/Plus30/blob/main/README.md)
 [![tr](https://img.shields.io/badge/lang-tr-green.svg)](https://github.com/SerhatBasesgioglu/Plus30/blob/main/README.tr.md)
 
-Geliştirme aşamasında, bolca hata ve bug bulundurur.
-
-Plus30 League of Legends özel oyun adminleri için yapılan ufak bir uygulamadır.
+Plus30, League of Legends özel oyun adminleri için yapılan ufak bir uygulamadır.
 
 # Mevcut Özellikler
 
@@ -22,7 +20,6 @@ Plus30 League of Legends özel oyun adminleri için yapılan ufak bir uygulamad�
 # Planlanan Özellikler
 
 - Otomatik davet
-- Daha kapsamlı bir blacklist entegrasyonu
 - Özel oyuna özel istatistik/sıralama sistemi
 - Discord entegrasyonu
 - Özel oyuna için pick ban sistemi(?)

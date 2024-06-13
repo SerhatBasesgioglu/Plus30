@@ -18,21 +18,24 @@ public class SummonerService {
     private final ObjectMapper objectMapper;
     private final SummonerRepository summonerRepository;
 
+
     @Autowired
     public SummonerService(LCUConnector connector, ObjectMapper objectMapper, SummonerRepository summonerDAO) {
         this.connector = connector;
         this.objectMapper = objectMapper;
         this.summonerRepository = summonerDAO;
-        connector.connect();
     }
+
 
     public List<Summoner> findAll() {
         return (List<Summoner>) summonerRepository.findAll();
     }
 
+
     public Optional<Summoner> findById(String id) {
         return summonerRepository.findById(id);
     }
+
 
     @Transactional
     public Summoner save(Summoner summoner) {
@@ -42,9 +45,6 @@ public class SummonerService {
             dbSummoner.setSummonerLevel(summoner.getSummonerLevel());
             dbSummoner.setGameName(summoner.getGameName());
             dbSummoner.setTagLine(summoner.getTagLine());
-            if (summoner.getIsBlacklisted() != null) {
-                dbSummoner.setIsBlacklisted(summoner.getIsBlacklisted());
-            }
             return summonerRepository.save(dbSummoner);
         }
         return summonerRepository.save(summoner);
@@ -61,11 +61,20 @@ public class SummonerService {
         return connector.get("/lol-summoner/v1/current-summoner", Summoner.class);
     }
 
+
     @Transactional
     public Summoner addSummonerByTag(String gameName, String tagLine) {
         Summoner summoner = getSummonerByTag(gameName, tagLine);
         return summonerRepository.save(summoner);
     }
+
+
+    @Transactional
+    public void deleteSummonerByTag(String gameName, String tagLine) {
+        Summoner summoner = getSummonerByTag(gameName, tagLine);
+        summonerRepository.delete(summoner);
+    }
+
 
     public Summoner getSummonerByTag(String gameName, String tagLine) {
         try {
@@ -80,22 +89,9 @@ public class SummonerService {
         }
     }
 
+
     public Summoner getSummonerByPuuid(String puuid) {
         String uri = String.format("/lol-summoner/v2/summoners/puuid/%s", puuid);
         return connector.get(uri, Summoner.class);
     }
-
-
-//    public JsonNode changeIcon(JsonNode data) {
-//        return connector.put("/lol-summoner/v1/current-summoner/icon", data);
-//    }
-//
-//    public JsonNode getProfile() {
-//        return connector.get("/lol-summoner/v1/current-summoner/summoner-profile");
-//    }
-//
-//    public JsonNode changeStatusMessage(JsonNode inputs) {
-//        return connector.put("/lol-chat/v1/me", inputs);
-//    }
-
 }
